@@ -85,3 +85,68 @@
 	"GLWindow.h"
 	<GL/freeglut.h>
 
+1460088725 source:u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\camera.c
+	<gl/freeglut.h>
+	<stdio.h>
+	"Camera.h"
+
+1460297151 u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\camera.h
+	"CustomDataTypes.h"
+
+1460278736 u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\customdatatypes.h
+
+1460297139 source:u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\cameracontroller.c
+	<stdio.h>
+	<math.h>
+	<conio.h>
+	<windows.h>
+	<GL/freeglut.h>
+	"CameraController.h"
+
+1460290868 u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\cameracontroller.h
+	"Camera.h"
+
+1460300323 source:u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\customgui.c
+	"CustomGUI.h"
+	<memory.h>
+	<stdlib.h>
+
+1460299587 u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\customgui.h
+	<GL/freeglut.h>
+	"CustomDataTypes.h"
+	"GLWindow.h"
+
+1460276561 u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\glwindow.h
+	"CustomDataTypes.h"
+
+1460278703 source:u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\drawableprimitives.c
+	"DrawablePrimitives.h"
+	"CustomDataTypes.h"
+	<gl/freeglut.h>
+
+1459938228 u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\drawableprimitives.h
+
+1460089502 source:u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\glwindow.c
+	"GLWindow.h"
+	<GL/freeglut.h>
+
+1460087187 source:u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\popupmenu.c
+	"PopupMenu.h"
+	<GL/freeglut.h>
+
+1460087582 u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\popupmenu.h
+	"PopupMenuFunctions.h"
+
+1460086590 u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\popupmenufunctions.h
+
+1460086291 source:u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\popupmenufunctions.c
+
+1460299942 source:u:\users\joshua voysey\documents\github\josh---kye-ict289-project\ict289 project\main.c
+	<gl/freeglut.h>
+	"DrawablePrimitives.h"
+	"Camera.h"
+	"CameraController.h"
+	"PopupMenu.h"
+	"CustomGUI.h"
+	"GLWindow.h"
+

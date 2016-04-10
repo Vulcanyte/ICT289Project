@@ -115,6 +115,7 @@ void GUIrenderText(GUItext* textElement)
     glRasterPos3fv(textElement->position);
 
     char* extendedText;
+    char* temp;
     char extraText1[10];
     char extraText2[10];
     char extraText3[10];
@@ -124,6 +125,10 @@ void GUIrenderText(GUItext* textElement)
     {
         switch(textElement->paramType)
         {
+            case CHAR_param:
+                extendedText = (char*)textElement->linkedParam;
+                break;
+
             case STR_param:
                 // Do nothing...
                 break;
@@ -197,21 +202,32 @@ void GUIrenderText(GUItext* textElement)
         }
 
         // Manually allocate enough memory to contain all of the above collected data in extendedText.
-        if(textElement->paramType == STR_param)
+        if(textElement->paramType == CHAR_param)
         {
-            extendedText = (char*)malloc(1 + strlen(textElement->text) + strlen((char*)textElement->linkedParam));
-            strcpy(extendedText, textElement->text);
-            strcat(extendedText, (char*)textElement->linkedParam);
+            for(c = textElement->text; *c != '\0'; c++)
+                glutBitmapCharacter(textElement->font, *c);
+
+            glutBitmapCharacter(textElement->font, *extendedText);
         }
         else
         {
-            extendedText = (char*)malloc(1 + strlen(textElement->text) + strlen(extraText_final));
-            strcpy(extendedText, textElement->text);
-            strcat(extendedText, extraText_final);
-        }
+            if(textElement->paramType == STR_param)
+            {
+                extendedText = (char*)malloc(1 + strlen(textElement->text) + strlen((char*)textElement->linkedParam));
+                strcpy(extendedText, textElement->text);
+                strcat(extendedText, (char*)textElement->linkedParam);
+            }
+            else
+            {
+                extendedText = (char*)malloc(1 + strlen(textElement->text) + strlen(extraText_final));
+                strcpy(extendedText, textElement->text);
+                strcat(extendedText, extraText_final);
+            }
 
-        for(c = extendedText; *c != '\0'; c++)
-            glutBitmapCharacter(textElement->font, *c);
+            for(c = extendedText; *c != '\0'; c++)
+                glutBitmapCharacter(textElement->font, *c);
+
+        }
 
         // Dump the excess memory to prevent memory leaks.
         free(extendedText);

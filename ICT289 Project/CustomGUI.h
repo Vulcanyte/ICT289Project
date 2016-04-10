@@ -20,7 +20,7 @@
     #include "GLWindow.h"
 
     /// Different types of external linked parameters require different labels to assist formatting. Below are the supported data types.
-    typedef enum {STR_param = 1, INT_param = 2, FLOAT_param = 3, POINT2_param = 4, POINT3_param = 5, TIME_param = 6} LinkedParamType;
+    typedef enum {CHAR_param = 1, STR_param = 2, INT_param = 3, FLOAT_param = 4, POINT2_param = 5, POINT3_param = 6, TIME_param = 7} LinkedParamType;
 
     /// Different types of GUI elements require different labels.
     typedef enum {GUI_TEXT = 1, GUI_LINE = 2} GUIelementType;
