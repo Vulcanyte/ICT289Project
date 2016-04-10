@@ -1,0 +1,87 @@
+# depslib dependency file v1.0
+1459922228 source:c:\users\32210066\desktop\ict289 cameraproject\main.c
+	<gl/freeglut.h>
+	"DrawablePrimitives.h"
+
+1459922286 source:c:\users\32210066\desktop\ict289 cameraproject\drawableprimitives.c
+	"DrawablePrimitives.h"
+	<gl/freeglut.h>
+
+1459921781 c:\users\32210066\desktop\ict289 cameraproject\drawableprimitives.h
+
+1460088725 source:u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\camera.c
+	<gl/freeglut.h>
+	<stdio.h>
+	"Camera.h"
+
+1460297151 u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\camera.h
+	"CustomDataTypes.h"
+
+1460278736 u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\customdatatypes.h
+
+1460278703 source:u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\drawableprimitives.c
+	"DrawablePrimitives.h"
+	"CustomDataTypes.h"
+	<gl/freeglut.h>
+
+1459938228 u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\drawableprimitives.h
+
+1460296825 source:u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\main.c
+	<gl/freeglut.h>
+	"DrawablePrimitives.h"
+	"Camera.h"
+	"CameraController.h"
+	"PopupMenu.h"
+	"CustomGUI.h"
+	"GLWindow.h"
+
+1460296909 source:u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\cameracontroller.c
+	<stdio.h>
+	<math.h>
+	<conio.h>
+	<windows.h>
+	<GL/freeglut.h>
+	"CameraController.h"
+
+1460290868 u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\cameracontroller.h
+	"Camera.h"
+
+1460087072 source:u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\menu.c
+	"Menu.h"
+	<GL/freeglut.h>
+
+1460087104 u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\menu.h
+	"MenuFunctions.h"
+
+1460086291 source:u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\menufunctions.c
+
+1460086590 u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\menufunctions.h
+
+1460087582 u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\popupmenu.h
+	"PopupMenuFunctions.h"
+
+1460086590 u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\popupmenufunctions.h
+
+1460087187 source:u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\popupmenu.c
+	"PopupMenu.h"
+	<GL/freeglut.h>
+
+1460086291 source:u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\popupmenufunctions.c
+
+1460291546 source:u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\customgui.c
+	"CustomGUI.h"
+	<memory.h>
+	<stdlib.h>
+
+1460296704 u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\customgui.h
+	<GL/freeglut.h>
+	"CustomDataTypes.h"
+	"GLWindow.h"
+
+1460276561 u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\glwindow.h
+	"CustomDataTypes.h"
+
+1460089502 source:u:\users\joshua voysey\desktop\my programs\c\ict289 cameraproject\glwindow.c
+	"GLWindow.h"
+	<GL/freeglut.h>
+
