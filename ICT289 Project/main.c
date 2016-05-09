@@ -9,6 +9,7 @@
 #include "PopupMenu.h"
 #include "CustomGUI.h"
 #include "GLWindow.h"
+#include "CollisionDetection.h"
 
 // Camera-related Parameters.
 Camera cam;
@@ -20,6 +21,12 @@ GL_PopupMenu mainMenu;
 GL_PopupMenu subMenuTest;
 GL_PopupMenuEntry testOptions[] = {{"Red", 1}, {"Blue", 2}, {"GREEN", 3}, {"ORANGE", 4}};
 GL_PopupMenuEntry subTestOptions[] = {{"SUB Red", 1}, {"SUB Blue", 2}, {"SUB Green", 3}, {"SUB Orange", 4}};
+
+// Collision Detection-related Parameters.
+collider_Sphere sphere1;
+collider_Sphere sphere2;
+collider_AABB box1;
+collider_AABB box2;
 
 // GUI-related Parameters.
 GUItext mouseLockText;
@@ -78,11 +85,19 @@ void myinit( void )
             // Enable depth testing.
             glEnable(GL_DEPTH_TEST);
 
-    // --------------------   Set up the menus.   --------------------
+    // --------------------   Set up the popup menus.   --------------------
             GLPopupMenuCreate(&mainMenu, "Main Menu", testMenuFunct, GLUT_MIDDLE_BUTTON, testOptions, 4);
             GLPopupMenuCreate(&subMenuTest, "SubMenu", testSubMenuFunc, -1, subTestOptions, 4);
 
             GLPopupMenuCreateSub(&mainMenu, &subMenuTest);
+
+    // --------------------   Set up the collision colliders.   --------------------
+            collisionInit_S(&sphere1, 0, 10, 0, 50);
+            collisionInit_S(&sphere2, 100, 10, 0, 50);
+            collisionInit_B(&box1, 0, 10, 150, 40, 10, 40);
+            collisionInit_B(&box2, 20, 10, 180, 30, 10, 40);
+
+            collisionDebug_Toggle(1);
 
     // --------------------   Set up the GUI.   --------------------
             // Initialise individual elements.
@@ -174,6 +189,17 @@ void display( void )
 
     GUIdisable2DRendering(&programWindow);
     // --------------------   STOP Drawing the GUI.   --------------------
+
+    // Collision system test cases.
+    //collisionCollideSS(&sphere1, &sphere2);
+    //collisionCollideBB(&box1, &box2);
+    //collisionCollideSB(&sphere1, &box1);
+
+    collisionDebug_DrawS(&sphere1);
+    collisionDebug_DrawS(&sphere2);
+
+    collisionDebug_DrawB(&box1);
+    collisionDebug_DrawB(&box2);
 
     DrawHouse(GL_LINE_LOOP);
 

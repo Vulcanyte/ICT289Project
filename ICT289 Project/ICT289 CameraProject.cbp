@@ -39,6 +39,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="CameraController.h" />
+		<Unit filename="CollisionDetection.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="CollisionDetection.h" />
 		<Unit filename="CustomDataTypes.h" />
 		<Unit filename="CustomGUI.c">
 			<Option compilerVar="CC" />
