@@ -83,6 +83,214 @@ short collisionCollideBB(collider_AABB* box1, collider_AABB* box2)
     return 1;   // TRUE.
 }
 
+void collisionFindNormalSS(collider_Sphere* coll_1, collider_Sphere* coll_2, point3 normal_1, point3 normal_2)
+{
+    // Find the un-normalised direction of the collision face of the other sphere.
+    point3 dir = {  coll_1->position[0] - coll_2->position[0],
+                    coll_1->position[1] - coll_2->position[1],
+                    coll_1->position[2] - coll_2->position[2]};
+
+    float dir_sq = dir[0] * dir[0] + dir[1] * dir[1] + dir[2] * dir[2];
+
+    // Normalise the un-normalised direction.
+    normal_1[0] = -dir[0] / sqrt(dir_sq);
+    normal_1[1] = -dir[1] / sqrt(dir_sq);
+    normal_1[2] = -dir[2] / sqrt(dir_sq);
+
+    normal_2[0] = -normal_1[0];
+    normal_2[1] = -normal_1[1];
+    normal_2[2] = -normal_1[2];
+
+    if(debugMode)
+    {
+        glBegin(GL_LINES);
+            glColor3f(0.5f, 0.5f, 0.5f);
+            glVertex3fv(coll_1->position);
+            glVertex3f(coll_1->position[0] + normal_1[0] * 100, coll_1->position[1] + normal_1[1] * 100, coll_1->position[2] + normal_1[2] * 100);
+        glEnd();
+
+        glBegin(GL_LINES);
+            glColor3f(0, 0, 0);
+            glVertex3fv(coll_2->position);
+            glVertex3f(coll_2->position[0] + normal_2[0] * 100, coll_2->position[1] + normal_2[1] * 100, coll_2->position[2] + normal_2[2] * 100);
+        glEnd();
+    }
+}
+
+void collisionFindNormalsSB(collider_Sphere* coll_1, collider_AABB* coll_2, point3 normal_1, point3 normal_2)
+{
+    normal_1[1] = 0;
+    normal_1[2] = 0;
+    normal_1[3] = 0;
+
+    normal_2[1] = 0;
+    normal_2[2] = 0;
+    normal_2[3] = 0;
+
+    // The penetration depths for each set of faces. FORMAT: { sphere <-> right, sphere <-> left, sphere <-> bottom, sphere <-> top, sphere <-> back, sphere <-> front  }.
+    float penetrations[6] = {0,0,0,0,0,0};
+
+    // Calculate the penetration depths for each set of sides.
+    penetrations[0] = abs((coll_1->position[0] - coll_1->radius) - (coll_2->position[0] + coll_2->sizeX * 0.5f));
+    penetrations[1] = abs((coll_1->position[0] + coll_1->radius) - (coll_2->position[0] - coll_2->sizeX * 0.5f));
+    penetrations[2] = abs((coll_1->position[0] + coll_1->radius) - (coll_2->position[0] - coll_2->sizeY * 0.5f));
+    penetrations[3] = abs((coll_1->position[0] - coll_1->radius) - (coll_2->position[0] + coll_2->sizeY * 0.5f));
+    penetrations[4] = abs((coll_1->position[0] + coll_1->radius) - (coll_2->position[0] - coll_2->sizeZ * 0.5f));
+    penetrations[5] = abs((coll_1->position[0] - coll_1->radius) - (coll_2->position[0] + coll_2->sizeZ * 0.5f));
+
+    // Find the smallest penetration depth.
+    int i;
+    float min = penetrations[0];
+    int minIndex = 0;
+
+    for(i = 1; i < 6; i++)
+        if(penetrations[i] < min)
+        {
+            min = penetrations[i];
+            minIndex = i;
+        }
+
+        // Use the index of the smallest penetration depth to dictate the normal of the colliding face.
+    switch(minIndex)
+    {
+        case 0:
+            normal_1[0] = 1;
+            normal_2[0] = -1;
+            break;
+
+        case 1:
+            normal_1[0] = -1;
+            normal_2[0] = 1;
+            break;
+
+        case 2:
+            normal_1[1] = -1;
+            normal_2[1] = 1;
+            break;
+
+        case 3:
+            normal_1[1] = 1;
+            normal_2[1] = -1;
+            break;
+
+        case 4:
+            normal_1[2] = -1;
+            normal_2[2] = 1;
+            break;
+
+        case 5:
+            normal_1[2] = 1;
+            normal_2[2] = -1;
+            break;
+
+        default:
+            // Do nothing...
+            break;
+    }
+
+    if(debugMode)
+    {
+        glBegin(GL_LINES);
+            glColor3f(0.5f, 0.5f, 0.5f);
+            glVertex3fv(coll_1->position);
+            glVertex3f(coll_1->position[0] + normal_1[0] * 100, coll_1->position[1] + normal_1[1] * 100, coll_1->position[2] + normal_1[2] * 100);
+        glEnd();
+
+        glBegin(GL_LINES);
+            glColor3f(0, 0, 0);
+            glVertex3fv(coll_2->position);
+            glVertex3f(coll_2->position[0] + normal_2[0] * 100, coll_2->position[1] + normal_2[1] * 100, coll_2->position[2] + normal_2[2] * 100);
+        glEnd();
+    }
+}
+
+void collisionFindNormalBB(collider_AABB* coll_1, collider_AABB* coll_2, point3 normal_1, point3 normal_2)
+{
+    normal_1[1] = 0;
+    normal_1[2] = 0;
+    normal_1[3] = 0;
+
+    normal_2[1] = 0;
+    normal_2[2] = 0;
+    normal_2[3] = 0;
+
+    // The penetration depths for each set of faces. FORMAT: { left1 <-> Right2, right1 <-> Left2, top1 <-> Bottom2, bottom1 <-> Top2, front1 <-> Back2, back1 <-> Front2  }.
+    float penetrations[6] = {0,0,0,0,0,0};
+
+    // Calculate the penetration depths for each set of sides.
+    penetrations[0] = abs((coll_1->position[0] - coll_1->sizeX * 0.5f) - (coll_2->position[0] + coll_2->sizeX * 0.5f));
+    penetrations[1] = abs((coll_1->position[0] + coll_1->sizeX * 0.5f) - (coll_2->position[0] - coll_2->sizeX * 0.5f));
+    penetrations[2] = abs((coll_1->position[0] + coll_1->sizeY * 0.5f) - (coll_2->position[0] - coll_2->sizeY * 0.5f));
+    penetrations[3] = abs((coll_1->position[0] - coll_1->sizeY * 0.5f) - (coll_2->position[0] + coll_2->sizeY * 0.5f));
+    penetrations[4] = abs((coll_1->position[0] + coll_1->sizeZ * 0.5f) - (coll_2->position[0] - coll_2->sizeZ * 0.5f));
+    penetrations[5] = abs((coll_1->position[0] - coll_1->sizeZ * 0.5f) - (coll_2->position[0] + coll_2->sizeZ * 0.5f));
+
+    // Find the smallest penetration depth.
+    int i;
+    float min = penetrations[0];
+    int minIndex = 0;
+
+    for(i = 1; i < 6; i++)
+        if(penetrations[i] < min)
+        {
+            min = penetrations[i];
+            minIndex = i;
+        }
+
+    // Use the index of the smallest penetration depth to dictate the normal of the colliding face.
+    switch(minIndex)
+    {
+        case 0:
+            normal_1[0] = 1;
+            normal_2[0] = -1;
+            break;
+
+        case 1:
+            normal_1[0] = -1;
+            normal_2[0] = 1;
+            break;
+
+        case 2:
+            normal_1[1] = -1;
+            normal_2[1] = 1;
+            break;
+
+        case 3:
+            normal_1[1] = 1;
+            normal_2[1] = -1;
+            break;
+
+        case 4:
+            normal_1[2] = -1;
+            normal_2[2] = 1;
+            break;
+
+        case 5:
+            normal_1[2] = 1;
+            normal_2[2] = -1;
+            break;
+
+        default:
+            // Do nothing...
+            break;
+    }
+
+    if(debugMode)
+    {
+        glBegin(GL_LINES);
+            glColor3f(0.5f, 0.5f, 0.5f);
+            glVertex3fv(coll_1->position);
+            glVertex3f(coll_1->position[0] + normal_1[0] * 100, coll_1->position[1] + normal_1[1] * 100, coll_1->position[2] + normal_1[2] * 100);
+        glEnd();
+
+        glBegin(GL_LINES);
+            glColor3f(0, 0, 0);
+            glVertex3fv(coll_2->position);
+            glVertex3f(coll_2->position[0] + normal_2[0] * 100, coll_2->position[1] + normal_2[1] * 100, coll_2->position[2] + normal_2[2] * 100);
+        glEnd();
+    }
+}
+
 void collisionDebug_DrawS(collider_Sphere* sph)
 {
     // Only draw the collider if Debug Mode is on.

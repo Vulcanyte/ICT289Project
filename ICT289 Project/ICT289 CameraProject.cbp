@@ -52,6 +52,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="DrawablePrimitives.h" />
+		<Unit filename="FileIO.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FileIO.h" />
 		<Unit filename="GLWindow.c">
 			<Option compilerVar="CC" />
 		</Unit>

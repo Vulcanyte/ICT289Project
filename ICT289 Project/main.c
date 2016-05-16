@@ -10,6 +10,7 @@
 #include "CustomGUI.h"
 #include "GLWindow.h"
 #include "CollisionDetection.h"
+#include "FileIO.h"
 
 // Camera-related Parameters.
 Camera cam;
@@ -27,6 +28,10 @@ collider_Sphere sphere1;
 collider_Sphere sphere2;
 collider_AABB box1;
 collider_AABB box2;
+point3 normal1 = {0,0,0};
+point3 normal2 = {0,0,0};
+point3 normal3 = {0,0,0};
+point3 normal4 = {0,0,0};
 
 // GUI-related Parameters.
 GUItext mouseLockText;
@@ -63,11 +68,18 @@ GUIframeEntry controlDisplayFrameOptions[] = {  {&controlDisplay_forward, GUI_TE
 
 // Other Program Parameters.
 GL_Window programWindow;
+unsigned char DATA[320 * 200 * 3];
 
 void myinit( void )
 {
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glLineWidth(5.0);
+
+    fileReadRAW_G("\\IMG\\bush2.raw", DATA, 320, 200);
+
+    //glReadPixels(0, 0, 320, 200, GL_RGB, GL_UNSIGNED_BYTE, DATA);
+    //glRasterPos2s(0,0);
+    //glDrawPixels(320, 200, GL_RGB, GL_UNSIGNED_BYTE, DATA);
 
     // --------------------   Set up the camera.   --------------------
             cameraInit(&cam, -500, 500, -500, 500, 0.01f, 10000.0f, 45, 1, PERSPECTIVE);
@@ -93,8 +105,8 @@ void myinit( void )
 
     // --------------------   Set up the collision colliders.   --------------------
             collisionInit_S(&sphere1, 0, 10, 0, 50);
-            collisionInit_S(&sphere2, 100, 10, 0, 50);
-            collisionInit_B(&box1, 0, 10, 150, 40, 10, 40);
+            collisionInit_S(&sphere2, 80, 30, 10, 50);
+            collisionInit_B(&box1, 0, 19, 150, 400, 10, 400);
             collisionInit_B(&box2, 20, 10, 180, 30, 10, 40);
 
             collisionDebug_Toggle(1);
@@ -191,8 +203,16 @@ void display( void )
     // --------------------   STOP Drawing the GUI.   --------------------
 
     // Collision system test cases.
-    //collisionCollideSS(&sphere1, &sphere2);
-    //collisionCollideBB(&box1, &box2);
+    if(collisionCollideSS(&sphere1, &sphere2))
+    {
+        collisionFindNormalSS(&sphere2, &sphere1, normal1, normal2);
+    }
+
+    if(collisionCollideBB(&box1, &box2))
+    {
+        collisionFindNormalBB(&box2, &box1, normal3, normal4);
+    }
+
     //collisionCollideSB(&sphere1, &box1);
 
     collisionDebug_DrawS(&sphere1);

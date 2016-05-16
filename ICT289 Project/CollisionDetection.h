@@ -96,6 +96,39 @@
     **/
     short collisionCollideBB(collider_AABB* box1, collider_AABB* box2);
 
+    /** @brief: Find the collision normals for two colliding spheres.
+
+        @param: coll_1 (collider_Sphere*) - The first collider to be tested.
+        @param: coll_2 (collider_Sphere*) - The second collider to be tested.
+        @param: normal_1 (point3) - The collision normal of the FIRST collider (coll_1 param).
+        @param: normal_2 (point3) - The collision normal of the SECOND collider (coll_2 param).
+
+        @return: NONE.
+    **/
+    void collisionFindNormalSS(collider_Sphere* coll_1, collider_Sphere* coll_2, point3 normal_1, point3 normal_2);
+
+    /** @brief: Find the collision normals for a sphere colliding with a box.
+
+        @param: coll_1 (collider_Sphere*) - The first collider to be tested.
+        @param: coll_2 (collider_AABB*) - The second collider to be tested.
+        @param: normal_1 (point3) - The collision normal of the FIRST collider (coll_1 param).
+        @param: normal_2 (point3) - The collision normal of the SECOND collider (coll_2 param).
+
+        @return: NONE.
+    **/
+    void collisionFindNormalSB(collider_Sphere* coll_1, collider_AABB* coll_2, point3 normal_1, point3 normal_2);
+
+    /** @brief: Find the collision normals for two colliding boxes.
+
+        @param: coll_1 (collider_AABB*) - The first collider to be tested.
+        @param: coll_2 (collider_AABB*) - The second collider to be tested.
+        @param: normal_1 (point3) - The collision normal of the FIRST collider (coll_1 param).
+        @param: normal_2 (point3) - The collision normal of the SECOND collider (coll_2 param).
+
+        @return: NONE.
+    **/
+    void collisionFindNormalBB(collider_AABB* coll_1, collider_AABB* coll_2, point3 normal_1, point3 normal_2);
+
     //------------------------   Debug functions.   --------------------------
 
     /** @brief: Toggle Debug mode for collision detection on / off.
