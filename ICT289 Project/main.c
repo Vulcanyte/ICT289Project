@@ -11,6 +11,7 @@
 #include "GLWindow.h"
 #include "CollisionDetection.h"
 #include "FileIO.h"
+#include "GameObject.h"
 
 // Camera-related Parameters.
 Camera cam;
@@ -70,6 +71,14 @@ GUIframeEntry controlDisplayFrameOptions[] = {  {&controlDisplay_forward, GUI_TE
 GL_Window programWindow;
 unsigned char DATA[320 * 200 * 3];
 
+// Player GameObject params.
+collider_Sphere playerRange;
+point3 playerRangeNormal;
+collider_AABB playerBody;
+GameObject player;
+GameObjectComponent playerComponents[] = {{&playerRange, COLL_SPHERE}, {&playerBody, COLL_BOX}};
+
+
 void myinit( void )
 {
     glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -84,6 +93,12 @@ void myinit( void )
     // --------------------   Set up the camera.   --------------------
             cameraInit(&cam, -500, 500, -500, 500, 0.01f, 10000.0f, 45, 1, PERSPECTIVE);
             cameraOrientate_f(&cam, -100, 180, 200, 150, 100, 0);
+
+            gameObjectInit(&player, cam.position[0], cam.position[1], cam.position[2], playerComponents, 2);
+            collisionInit_S(&playerRange, 0,0,0, 10);
+            collisionInit_B(&playerBody, 0, 0, 0, 20, 20, 20);
+
+            gameObjectUpdate(&player);
 
             // Activate the camera.
             cameraProject(&cam);
@@ -202,10 +217,16 @@ void display( void )
     GUIdisable2DRendering(&programWindow);
     // --------------------   STOP Drawing the GUI.   --------------------
 
+    // --------------------   START Collision test code.   --------------------
     // Collision system test cases.
-    if(collisionCollideSS(&sphere1, &sphere2))
+    if(collisionCollideSS(&playerRange, &sphere2))
     {
-        collisionFindNormalSS(&sphere2, &sphere1, normal1, normal2);
+        collisionFindNormalSS(&playerRange, &sphere2, normal1, normal2);
+    }
+
+    if(collisionCollideSB(&sphere1, &box2))
+    {
+        //collisionFindNormalSB(&playerRange, &box2, playerRangeNormal, normal2);
     }
 
     if(collisionCollideBB(&box1, &box2))
@@ -220,6 +241,17 @@ void display( void )
 
     collisionDebug_DrawB(&box1);
     collisionDebug_DrawB(&box2);
+
+    // --------------------   STOP Collision test code.   --------------------
+
+    // --------------------   START GameObject test code.   --------------------
+
+    gameObjectSetPos(&player, cam.position[0], cam.position[1], cam.position[2]);
+    collisionOffset_S(&playerRange, cam.lookAt[0] * 100, cam.lookAt[1] * 100, cam.lookAt[2] * 100);
+    gameObjectUpdate(&player);
+    gameObjectRender(&player);
+
+    // --------------------   STOP GameObject test code.   --------------------
 
     DrawHouse(GL_LINE_LOOP);
 

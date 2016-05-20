@@ -12,6 +12,10 @@ void collisionInit_S(collider_Sphere* sph, float posX, float posY, float posZ, f
     sph->position[1] = posY;
     sph->position[2] = posZ;
 
+    sph->offset[0] = 0;
+    sph->offset[1] = 0;
+    sph->offset[2] = 0;
+
     sph->radius = r;
 
     sph->isColliding = 0;
@@ -23,11 +27,29 @@ void collisionInit_B(collider_AABB* box, float posX, float posY, float posZ, flo
     box->position[1] = posY;
     box->position[2] = posZ;
 
+    box->offset[0] = 0;
+    box->offset[1] = 0;
+    box->offset[2] = 0;
+
     box->sizeX = sizeX;
     box->sizeY = sizeY;
     box->sizeZ = sizeZ;
 
     box->isColliding = 0;
+}
+
+void collisionOffset_S(collider_Sphere* sph, float offsetX, float offsetY, float offsetZ)
+{
+    sph->offset[0] = offsetX;
+    sph->offset[1] = offsetY;
+    sph->offset[2] = offsetZ;
+}
+
+void collisionOffset_B(collider_AABB* box, float offsetX, float offsetY, float offsetZ)
+{
+    box->offset[0] = offsetX;
+    box->offset[1] = offsetY;
+    box->offset[2] = offsetZ;
 }
 
 short collisionCollideSS(collider_Sphere* sph1, collider_Sphere* sph2)

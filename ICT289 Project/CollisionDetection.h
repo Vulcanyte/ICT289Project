@@ -23,6 +23,7 @@
     typedef struct
     {
         point3 position;        // The XYZ world co-ordinates of the sphere collider.
+        point3 offset;          // The XYZ world co-ordinate offset from a linked mode / etc.
         float radius;           // The radius of the sphere collider.
         short isColliding;      // 1 (TRUE) if the collider is currently colliding with another collider, else 0 (FALSE).
 
@@ -32,6 +33,7 @@
     typedef struct
     {
         point3 position;        // The XYZ world co-ordinates of the AABB collider.
+        point3 offset;          // The XYZ world co-ordinate offset from a linked mode / etc.
         float sizeX;            // The X dimension of the AABB collider.
         float sizeY;            // The Y dimension of the AABB collider.
         float sizeZ;            // The Z dimension of the AABB collider.
@@ -43,7 +45,7 @@
 
     /** @brief: Initialise a Sphere Collider.
 
-        @param: sph (collider_Sphere*) - The sphere collider to be initialised.
+        @param: sph (collider_Sphere* ) - The sphere collider to be initialised.
         @param: posX (float) - The X world co-ordinate that the sphere collider will be placed at.
         @param: posY (float) - The Y world co-ordinate that the sphere collider will be placed at.
         @param: posZ (float) - The Z world co-ordinate that the sphere collider will be placed at.
@@ -55,7 +57,7 @@
 
     /** @brief: Initialise an AABB Collider.
 
-        @param: box (collider_AABB*) - The AABB collider to be initialised.
+        @param: box (collider_AABB* ) - The AABB collider to be initialised.
         @param: posX (float) - The X world co-ordinate that the AABB collider will be placed at.
         @param: posY (float) - The Y world co-ordinate that the AABB collider will be placed at.
         @param: posZ (float) - The Z world co-ordinate that the AABB collider will be placed at.
@@ -67,12 +69,34 @@
     **/
     void collisionInit_B(collider_AABB* box, float posX, float posY, float posZ, float sizeX, float sizeY, float sizeZ);
 
+    /** @brief: Offset a Sphere Collider relative to a linked GameObject.
+
+        @param: box (collider_Sphere* ) - The Sphere collider to be initialised.
+        @param: posX (float) - The X world co-ordinate offset that the Sphere collider will be placed at relative to a linked GameObject.
+        @param: posY (float) - The Y world co-ordinate offset that the Sphere collider will be placed at relative to a linked GameObject.
+        @param: posZ (float) - The Z world co-ordinate offset that the Sphere collider will be placed at relative to a linked GameObject.
+
+        @return: NONE.
+    **/
+    void collisionOffset_S(collider_Sphere* sph, float offsetX, float offsetY, float offsetZ);
+
+    /** @brief: Offset an AABB Collider relative to a linked GameObject.
+
+        @param: box (collider_AABB* ) - The AABB collider to be initialised.
+        @param: posX (float) - The X world co-ordinate offset that the AABB collider will be placed at relative to a linked GameObject.
+        @param: posY (float) - The Y world co-ordinate offset that the AABB collider will be placed at relative to a linked GameObject.
+        @param: posZ (float) - The Z world co-ordinate offset that the AABB collider will be placed at relative to a linked GameObject.
+
+        @return: NONE.
+    **/
+    void collisionOffset_B(collider_AABB* box, float offsetX, float offsetY, float offsetZ);
+
     //------------------------   Collision Detection functions.   --------------------------
 
     /** @brief: Check for collisions between two sphere colliders.
 
-        @param: sph1 (collider_Sphere*) - The first sphere to be tested.
-        @param: sph2 (collider_Sphere*) - The second sphere to be tested.
+        @param: sph1 (collider_Sphere* ) - The first sphere to be tested.
+        @param: sph2 (collider_Sphere* ) - The second sphere to be tested.
 
         @return: 1 (TRUE) if the two spheres are currently colliding, else 0 (FALSE).
     **/
@@ -80,8 +104,8 @@
 
     /** @brief: Check for collisions between an AABB collider and a sphere collider.
 
-        @param: sph (collider_Sphere*) - The sphere to be tested.
-        @param: box (collider_AABB*) - The box to be tested.
+        @param: sph (collider_Sphere* ) - The sphere to be tested.
+        @param: box (collider_AABB* ) - The box to be tested.
 
         @return: 1 (TRUE) if the two colliders are currently colliding, else 0 (FALSE).
     **/
@@ -89,8 +113,8 @@
 
     /** @brief: Check for collisions between two AABB colliders.
 
-        @param: box1 (collider_AABB*) - The first box to be tested.
-        @param: box2 (collider_AABB*) - The second box to be tested.
+        @param: box1 (collider_AABB* ) - The first box to be tested.
+        @param: box2 (collider_AABB* ) - The second box to be tested.
 
         @return: 1 (TRUE) if the two boxes are currently colliding, else 0 (FALSE).
     **/
@@ -98,8 +122,8 @@
 
     /** @brief: Find the collision normals for two colliding spheres.
 
-        @param: coll_1 (collider_Sphere*) - The first collider to be tested.
-        @param: coll_2 (collider_Sphere*) - The second collider to be tested.
+        @param: coll_1 (collider_Sphere* ) - The first collider to be tested.
+        @param: coll_2 (collider_Sphere* ) - The second collider to be tested.
         @param: normal_1 (point3) - The collision normal of the FIRST collider (coll_1 param).
         @param: normal_2 (point3) - The collision normal of the SECOND collider (coll_2 param).
 
@@ -109,8 +133,8 @@
 
     /** @brief: Find the collision normals for a sphere colliding with a box.
 
-        @param: coll_1 (collider_Sphere*) - The first collider to be tested.
-        @param: coll_2 (collider_AABB*) - The second collider to be tested.
+        @param: coll_1 (collider_Sphere* ) - The first collider to be tested.
+        @param: coll_2 (collider_AABB* ) - The second collider to be tested.
         @param: normal_1 (point3) - The collision normal of the FIRST collider (coll_1 param).
         @param: normal_2 (point3) - The collision normal of the SECOND collider (coll_2 param).
 
@@ -120,8 +144,8 @@
 
     /** @brief: Find the collision normals for two colliding boxes.
 
-        @param: coll_1 (collider_AABB*) - The first collider to be tested.
-        @param: coll_2 (collider_AABB*) - The second collider to be tested.
+        @param: coll_1 (collider_AABB* ) - The first collider to be tested.
+        @param: coll_2 (collider_AABB* ) - The second collider to be tested.
         @param: normal_1 (point3) - The collision normal of the FIRST collider (coll_1 param).
         @param: normal_2 (point3) - The collision normal of the SECOND collider (coll_2 param).
 
@@ -149,7 +173,7 @@
 
     /** @brief: Draw a collision sphere. Note: Only draws if the debug mode flag is set to TRUE.
 
-        @param: sph (collider_Sphere*) - The sphere collider to be drawn.
+        @param: sph (collider_Sphere* ) - The sphere collider to be drawn.
 
         @return: NONE.
     **/
@@ -157,7 +181,7 @@
 
     /** @brief: Draw an AABB. Note: Only draws if the debug mode flag is set to TRUE.
 
-        @param: box (collider_AABB*) - The AABB to be drawn.
+        @param: box (collider_AABB* ) - The AABB to be drawn.
 
         @return: NONE.
     **/
