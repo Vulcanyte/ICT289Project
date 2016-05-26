@@ -70,42 +70,57 @@ short collisionCollideSS(collider_Sphere* sph1, collider_Sphere* sph2)
 
 short collisionCollideSB(collider_Sphere* sph, collider_AABB* box)
 {
+    short coll = 1;   // TRUE.
+
     // Test X axis.
-    if(sph->position[0] + sph->radius < box->position[0] - 0.5f * box->sizeX) return 0;   // FALSE.
-    if(sph->position[0] - sph->radius > box->position[0] + 0.5f * box->sizeX) return 0;   // FALSE.
+    if(sph->position[0] + sph->radius < box->position[0] - 0.5f * box->sizeX) coll = 0;   // FALSE.
+    else
+    if(sph->position[0] - sph->radius > box->position[0] + 0.5f * box->sizeX) coll = 0;   // FALSE.
+    else
 
     // Test Y axis.
-    if(sph->position[1] + sph->radius < box->position[1] - 0.5f * box->sizeY) return 0;   // FALSE.
-    if(sph->position[1] - sph->radius > box->position[1] + 0.5f * box->sizeY) return 0;   // FALSE.
+    if(sph->position[1] + sph->radius < box->position[1] - 0.5f * box->sizeY) coll = 0;   // FALSE.
+    else
+    if(sph->position[1] - sph->radius > box->position[1] + 0.5f * box->sizeY) coll = 0;   // FALSE.
+    else
 
     // Test Z axis.
-    if(sph->position[2] + sph->radius < box->position[2] - 0.5f * box->sizeZ) return 0;   // FALSE.
-    if(sph->position[2] - sph->radius > box->position[2] + 0.5f * box->sizeZ) return 0;   // FALSE.
+    if(sph->position[2] + sph->radius < box->position[2] - 0.5f * box->sizeZ) coll = 0;   // FALSE.
+    else
+    if(sph->position[2] - sph->radius > box->position[2] + 0.5f * box->sizeZ) coll = 0;   // FALSE.
 
-    sph->isColliding = 1;
-    box->isColliding = 1;
-    return 1;   // TRUE;
+    sph->isColliding = coll;
+    box->isColliding = coll;
+
+    return coll;
 }
 
 short collisionCollideBB(collider_AABB* box1, collider_AABB* box2)
 {
-    // Test X axis.
-    if(box1->position[0] + 0.5f * box1->sizeX < box2->position[0] - 0.5f * box2->sizeX) return 0;   // FALSE.
-    if(box1->position[0] - 0.5f * box1->sizeX > box2->position[0] + 0.5f * box2->sizeX) return 0;   // FALSE.
+    short coll = 1; // TRUE.
 
-    if(box1->position[1] + 0.5f * box1->sizeY < box2->position[1] - 0.5f * box2->sizeY) return 0;   // FALSE.
-    if(box1->position[1] - 0.5f * box1->sizeY > box2->position[1] + 0.5f * box2->sizeY) return 0;   // FALSE.
+    // Test X axis.
+    if(box1->position[0] + 0.5f * box1->sizeX < box2->position[0] - 0.5f * box2->sizeX) coll = 0;   // FALSE.
+    else
+    if(box1->position[0] - 0.5f * box1->sizeX > box2->position[0] + 0.5f * box2->sizeX) coll = 0;   // FALSE.
+    else
+
+    if(box1->position[1] + 0.5f * box1->sizeY < box2->position[1] - 0.5f * box2->sizeY) coll = 0;   // FALSE.
+    else
+    if(box1->position[1] - 0.5f * box1->sizeY > box2->position[1] + 0.5f * box2->sizeY) coll = 0;   // FALSE.
+    else
 
     // Test Z axis.
-    if(box1->position[2] + 0.5f * box1->sizeZ < box2->position[2] - 0.5f * box2->sizeZ) return 0;   // FALSE.
-    if(box1->position[2] - 0.5f * box1->sizeZ > box2->position[2] + 0.5f * box2->sizeZ) return 0;   // FALSE.
+    if(box1->position[2] + 0.5f * box1->sizeZ < box2->position[2] - 0.5f * box2->sizeZ) coll = 0;   // FALSE.
+    else
+    if(box1->position[2] - 0.5f * box1->sizeZ > box2->position[2] + 0.5f * box2->sizeZ) coll = 0;   // FALSE.
 
-    box1->isColliding = 1;
-    box2->isColliding = 1;
-    return 1;   // TRUE.
+    box1->isColliding = coll;
+    box2->isColliding = coll;
+    return 1;
 }
 
-void collisionFindNormalSS(collider_Sphere* coll_1, collider_Sphere* coll_2, point3 normal_1, point3 normal_2)
+float collisionFindNormalSS(collider_Sphere* coll_1, collider_Sphere* coll_2, float* norm_sph1X, float* norm_sph1Y, float* norm_sph1Z, float* norm_sph2X, float* norm_sph2Y, float* norm_sph2Z)
 {
     // Find the un-normalised direction of the collision face of the other sphere.
     point3 dir = {  coll_1->position[0] - coll_2->position[0],
@@ -115,39 +130,47 @@ void collisionFindNormalSS(collider_Sphere* coll_1, collider_Sphere* coll_2, poi
     float dir_sq = dir[0] * dir[0] + dir[1] * dir[1] + dir[2] * dir[2];
 
     // Normalise the un-normalised direction.
-    normal_1[0] = -dir[0] / sqrt(dir_sq);
-    normal_1[1] = -dir[1] / sqrt(dir_sq);
-    normal_1[2] = -dir[2] / sqrt(dir_sq);
+    *norm_sph1X = -dir[0] / sqrt(dir_sq);
+    *norm_sph1Y = -dir[1] / sqrt(dir_sq);
+    *norm_sph1Z = -dir[2] / sqrt(dir_sq);
 
-    normal_2[0] = -normal_1[0];
-    normal_2[1] = -normal_1[1];
-    normal_2[2] = -normal_1[2];
+    *norm_sph2X = -*norm_sph1X;
+    *norm_sph2Y = -*norm_sph1Y;
+    *norm_sph2Z = -*norm_sph1Z;
+
+    float magX = (coll_1->position[0] - coll_2->position[0]) * (coll_1->position[0] - coll_2->position[0]);
+    float magY = (coll_1->position[1] - coll_2->position[1]) * (coll_1->position[1] - coll_2->position[1]);
+    float magZ = (coll_1->position[2] - coll_2->position[2]) * (coll_1->position[2] - coll_2->position[2]);
+
+    float penetrationDepth = (coll_1->radius + coll_2->radius) - sqrt(magX + magY + magZ);
 
     if(debugMode)
     {
         glBegin(GL_LINES);
             glColor3f(0.5f, 0.5f, 0.5f);
             glVertex3fv(coll_1->position);
-            glVertex3f(coll_1->position[0] + normal_1[0] * 100, coll_1->position[1] + normal_1[1] * 100, coll_1->position[2] + normal_1[2] * 100);
+            glVertex3f(coll_1->position[0] + *norm_sph1X * 100, coll_1->position[1] + *norm_sph1Y * 100, coll_1->position[2] + *norm_sph1Z * 100);
         glEnd();
 
         glBegin(GL_LINES);
             glColor3f(0, 0, 0);
             glVertex3fv(coll_2->position);
-            glVertex3f(coll_2->position[0] + normal_2[0] * 100, coll_2->position[1] + normal_2[1] * 100, coll_2->position[2] + normal_2[2] * 100);
+            glVertex3f(coll_2->position[0] + *norm_sph2X * 100, coll_2->position[1] + *norm_sph2Y * 100, coll_2->position[2] + *norm_sph2Z * 100);
         glEnd();
     }
+
+    return penetrationDepth;
 }
 
-void collisionFindNormalsSB(collider_Sphere* coll_1, collider_AABB* coll_2, point3 normal_1, point3 normal_2)
+float collisionFindNormalSB(collider_Sphere* coll_1, collider_AABB* coll_2, float* norm_sphX, float* norm_sphY, float* norm_sphZ, float* norm_boxX, float* norm_boxY, float* norm_boxZ)
 {
-    normal_1[1] = 0;
-    normal_1[2] = 0;
-    normal_1[3] = 0;
+    *norm_sphX = 0;
+    *norm_sphY = 0;
+    *norm_sphZ = 0;
 
-    normal_2[1] = 0;
-    normal_2[2] = 0;
-    normal_2[3] = 0;
+    *norm_boxX = 0;
+    *norm_boxY = 0;
+    *norm_boxZ = 0;
 
     // The penetration depths for each set of faces. FORMAT: { sphere <-> right, sphere <-> left, sphere <-> bottom, sphere <-> top, sphere <-> back, sphere <-> front  }.
     float penetrations[6] = {0,0,0,0,0,0};
@@ -155,10 +178,10 @@ void collisionFindNormalsSB(collider_Sphere* coll_1, collider_AABB* coll_2, poin
     // Calculate the penetration depths for each set of sides.
     penetrations[0] = abs((coll_1->position[0] - coll_1->radius) - (coll_2->position[0] + coll_2->sizeX * 0.5f));
     penetrations[1] = abs((coll_1->position[0] + coll_1->radius) - (coll_2->position[0] - coll_2->sizeX * 0.5f));
-    penetrations[2] = abs((coll_1->position[0] + coll_1->radius) - (coll_2->position[0] - coll_2->sizeY * 0.5f));
-    penetrations[3] = abs((coll_1->position[0] - coll_1->radius) - (coll_2->position[0] + coll_2->sizeY * 0.5f));
-    penetrations[4] = abs((coll_1->position[0] + coll_1->radius) - (coll_2->position[0] - coll_2->sizeZ * 0.5f));
-    penetrations[5] = abs((coll_1->position[0] - coll_1->radius) - (coll_2->position[0] + coll_2->sizeZ * 0.5f));
+    penetrations[2] = abs((coll_1->position[1] + coll_1->radius) - (coll_2->position[1] - coll_2->sizeY * 0.5f));
+    penetrations[3] = abs((coll_1->position[1] - coll_1->radius) - (coll_2->position[1] + coll_2->sizeY * 0.5f));
+    penetrations[4] = abs((coll_1->position[2] + coll_1->radius) - (coll_2->position[2] - coll_2->sizeZ * 0.5f));
+    penetrations[5] = abs((coll_1->position[2] - coll_1->radius) - (coll_2->position[2] + coll_2->sizeZ * 0.5f));
 
     // Find the smallest penetration depth.
     int i;
@@ -166,43 +189,45 @@ void collisionFindNormalsSB(collider_Sphere* coll_1, collider_AABB* coll_2, poin
     int minIndex = 0;
 
     for(i = 1; i < 6; i++)
+    {
         if(penetrations[i] < min)
         {
             min = penetrations[i];
             minIndex = i;
         }
+    }
 
-        // Use the index of the smallest penetration depth to dictate the normal of the colliding face.
+    // Use the index of the smallest penetration depth to dictate the normal of the colliding face.
     switch(minIndex)
     {
         case 0:
-            normal_1[0] = 1;
-            normal_2[0] = -1;
+            *norm_sphX = 1;
+            *norm_boxX = -1;
             break;
 
         case 1:
-            normal_1[0] = -1;
-            normal_2[0] = 1;
+            *norm_sphX = -1;
+            *norm_boxX = 1;
             break;
 
         case 2:
-            normal_1[1] = -1;
-            normal_2[1] = 1;
+            *norm_sphY = -1;
+            *norm_boxY = 1;
             break;
 
         case 3:
-            normal_1[1] = 1;
-            normal_2[1] = -1;
+            *norm_sphY = 1;
+            *norm_boxY = -1;
             break;
 
         case 4:
-            normal_1[2] = -1;
-            normal_2[2] = 1;
+            *norm_sphZ = -1;
+            *norm_boxZ = 1;
             break;
 
         case 5:
-            normal_1[2] = 1;
-            normal_2[2] = -1;
+            *norm_sphZ = 1;
+            *norm_boxZ = -1;
             break;
 
         default:
@@ -215,26 +240,28 @@ void collisionFindNormalsSB(collider_Sphere* coll_1, collider_AABB* coll_2, poin
         glBegin(GL_LINES);
             glColor3f(0.5f, 0.5f, 0.5f);
             glVertex3fv(coll_1->position);
-            glVertex3f(coll_1->position[0] + normal_1[0] * 100, coll_1->position[1] + normal_1[1] * 100, coll_1->position[2] + normal_1[2] * 100);
+            glVertex3f(coll_1->position[0] + *norm_sphX * 100, coll_1->position[1] + *norm_sphY * 100, coll_1->position[2] + *norm_sphZ * 100);
         glEnd();
 
         glBegin(GL_LINES);
             glColor3f(0, 0, 0);
             glVertex3fv(coll_2->position);
-            glVertex3f(coll_2->position[0] + normal_2[0] * 100, coll_2->position[1] + normal_2[1] * 100, coll_2->position[2] + normal_2[2] * 100);
+            glVertex3f(coll_2->position[0] + *norm_boxZ * 100, coll_2->position[1] + *norm_boxY * 100, coll_2->position[2] + *norm_boxZ * 100);
         glEnd();
     }
+
+    return min;
 }
 
-void collisionFindNormalBB(collider_AABB* coll_1, collider_AABB* coll_2, point3 normal_1, point3 normal_2)
+float collisionFindNormalBB(collider_AABB* coll_1, collider_AABB* coll_2, float* norm_box1X, float* norm_box1Y, float* norm_box1Z, float* norm_box2X, float* norm_box2Y, float* norm_box2Z)
 {
-    normal_1[1] = 0;
-    normal_1[2] = 0;
-    normal_1[3] = 0;
+    *norm_box1X = 0;
+    *norm_box1Y = 0;
+    *norm_box1Z = 0;
 
-    normal_2[1] = 0;
-    normal_2[2] = 0;
-    normal_2[3] = 0;
+    *norm_box2X = 0;
+    *norm_box2Y = 0;
+    *norm_box2Z = 0;
 
     // The penetration depths for each set of faces. FORMAT: { left1 <-> Right2, right1 <-> Left2, top1 <-> Bottom2, bottom1 <-> Top2, front1 <-> Back2, back1 <-> Front2  }.
     float penetrations[6] = {0,0,0,0,0,0};
@@ -242,10 +269,10 @@ void collisionFindNormalBB(collider_AABB* coll_1, collider_AABB* coll_2, point3 
     // Calculate the penetration depths for each set of sides.
     penetrations[0] = abs((coll_1->position[0] - coll_1->sizeX * 0.5f) - (coll_2->position[0] + coll_2->sizeX * 0.5f));
     penetrations[1] = abs((coll_1->position[0] + coll_1->sizeX * 0.5f) - (coll_2->position[0] - coll_2->sizeX * 0.5f));
-    penetrations[2] = abs((coll_1->position[0] + coll_1->sizeY * 0.5f) - (coll_2->position[0] - coll_2->sizeY * 0.5f));
-    penetrations[3] = abs((coll_1->position[0] - coll_1->sizeY * 0.5f) - (coll_2->position[0] + coll_2->sizeY * 0.5f));
-    penetrations[4] = abs((coll_1->position[0] + coll_1->sizeZ * 0.5f) - (coll_2->position[0] - coll_2->sizeZ * 0.5f));
-    penetrations[5] = abs((coll_1->position[0] - coll_1->sizeZ * 0.5f) - (coll_2->position[0] + coll_2->sizeZ * 0.5f));
+    penetrations[2] = abs((coll_1->position[1] + coll_1->sizeY * 0.5f) - (coll_2->position[1] - coll_2->sizeY * 0.5f));
+    penetrations[3] = abs((coll_1->position[1] - coll_1->sizeY * 0.5f) - (coll_2->position[1] + coll_2->sizeY * 0.5f));
+    penetrations[4] = abs((coll_1->position[2] + coll_1->sizeZ * 0.5f) - (coll_2->position[2] - coll_2->sizeZ * 0.5f));
+    penetrations[5] = abs((coll_1->position[2] - coll_1->sizeZ * 0.5f) - (coll_2->position[2] + coll_2->sizeZ * 0.5f));
 
     // Find the smallest penetration depth.
     int i;
@@ -253,43 +280,45 @@ void collisionFindNormalBB(collider_AABB* coll_1, collider_AABB* coll_2, point3 
     int minIndex = 0;
 
     for(i = 1; i < 6; i++)
+    {
         if(penetrations[i] < min)
         {
             min = penetrations[i];
             minIndex = i;
         }
+    }
 
     // Use the index of the smallest penetration depth to dictate the normal of the colliding face.
     switch(minIndex)
     {
         case 0:
-            normal_1[0] = 1;
-            normal_2[0] = -1;
+            *norm_box1X = 1;
+            *norm_box2X = -1;
             break;
 
         case 1:
-            normal_1[0] = -1;
-            normal_2[0] = 1;
+            *norm_box1X = -1;
+            *norm_box2X = 1;
             break;
 
         case 2:
-            normal_1[1] = -1;
-            normal_2[1] = 1;
+            *norm_box1Y = -1;
+            *norm_box2Y = 1;
             break;
 
         case 3:
-            normal_1[1] = 1;
-            normal_2[1] = -1;
+            *norm_box1Y = 1;
+            *norm_box2Y = -1;
             break;
 
         case 4:
-            normal_1[2] = -1;
-            normal_2[2] = 1;
+            *norm_box1Z = -1;
+            *norm_box2Z = 1;
             break;
 
         case 5:
-            normal_1[2] = 1;
-            normal_2[2] = -1;
+            *norm_box1Z = 1;
+            *norm_box2Z = -1;
             break;
 
         default:
@@ -302,15 +331,17 @@ void collisionFindNormalBB(collider_AABB* coll_1, collider_AABB* coll_2, point3 
         glBegin(GL_LINES);
             glColor3f(0.5f, 0.5f, 0.5f);
             glVertex3fv(coll_1->position);
-            glVertex3f(coll_1->position[0] + normal_1[0] * 100, coll_1->position[1] + normal_1[1] * 100, coll_1->position[2] + normal_1[2] * 100);
+            glVertex3f(coll_1->position[0] + *norm_box1X * 100, coll_1->position[1] + *norm_box1Y * 100, coll_1->position[2] + *norm_box1Z * 100);
         glEnd();
 
         glBegin(GL_LINES);
             glColor3f(0, 0, 0);
             glVertex3fv(coll_2->position);
-            glVertex3f(coll_2->position[0] + normal_2[0] * 100, coll_2->position[1] + normal_2[1] * 100, coll_2->position[2] + normal_2[2] * 100);
+            glVertex3f(coll_2->position[0] + *norm_box2X * 100, coll_2->position[1] + *norm_box2Y * 100, coll_2->position[2] + *norm_box2Z * 100);
         glEnd();
     }
+
+    return penetrations[minIndex];
 }
 
 void collisionDebug_DrawS(collider_Sphere* sph)

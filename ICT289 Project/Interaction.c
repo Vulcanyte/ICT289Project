@@ -24,19 +24,19 @@ void moveBall()
 // will play around with this to get it working
 void bindKeysToControls(interactionControls* controller, collider_Sphere* playerSphere, interactionControlKeys* controls)
 {
-    controller->playerSphere = charCSphere;
-    controller->interactionControls = controls;
+    //controller->playerSphere = charCSphere;
+    //controller->interactionControls = controls;
 }
 
 // to change the binds
 void controllerExitInteractionKeyControls(interactionControls* controller, char pKey, char tKey, char eKey)
 {
-    if(pKey != '\n')
+    /*if(pKey != '\n')
         controller->keybinds->pickUpKey = pKey;
-    
+
     if(pKey != '\n')
         controller->keybinds->throwKey = tKey;
-    
+
     if(pKey != '\n')
-        controller->keybinds->ExitKey = eKey;
+        controller->keybinds->ExitKey = eKey;*/
 }

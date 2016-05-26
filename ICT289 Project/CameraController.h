@@ -20,17 +20,24 @@
     /// Specification for how the camera controls will affect the bound camera.
     typedef enum {FIRST_PERSON = 0, THIRD_PERSON = 1, TOP_DOWN = 2} ControlType;
 
+    typedef struct
+    {
+        char key;       // A certain key.
+        short down;     // TRUE (1) if pushed down, else FALSE (0).
+
+    }ControlKey;
+
     /// Container for basic key controls for reference from within a camera controller struct.
     typedef struct
     {
-        char forwardKey;    // The forward movement keyboard key.
-        char backwardKey;   // The backward movement keyboard key.
-        char upKey;         // The upward movement keyboard key.
-        char downKey;       // The downward movement keyboard key.
-        char strafe_L;      // The left strafe keyboard key.
-        char strafe_R;      // The right strafe keyboard key.
+        ControlKey forwardKey;    // The forward movement keyboard key.
+        ControlKey backwardKey;   // The backward movement keyboard key.
+        ControlKey upKey;         // The upward movement keyboard key.
+        ControlKey downKey;       // The downward movement keyboard key.
+        ControlKey strafe_L;      // The left strafe keyboard key.
+        ControlKey strafe_R;      // The right strafe keyboard key.
 
-        char mouseLock;     // The keyboard key that, when pressed, activates / deactivates camera rotation via mouse movement.
+        ControlKey mouseLock;     // The keyboard key that, when pressed, activates / deactivates camera rotation via mouse movement.
 
     } CameraControlKeys;
 
@@ -46,7 +53,7 @@
         float mouseSensitivityX;            // X Rotation speed modifier.
         float mouseSensitivityY;            // Y Rotation speed modifier.
         float speedModifier;                // Movement speed modifier.
-        short skipCheck;                    //
+        short skipCheck;                    // Boolean to skip the mouse cursor repositioning for one frame while everything is set up.
 
     } CameraController;
 
@@ -108,6 +115,15 @@
         @return: NONE.
     **/
     void controllerCheckKeys(CameraController* controller, char ch);
+
+    /** @brief: Update the cameraController's internal parameteres according to which keys are currently held down.
+
+        @param: controller (CameraController* ) - The cameraController that is being affected by this function.
+        @param: deltaTime (float) - The elapsed time since the last time this function was called.
+
+        @return: NONE.
+    **/
+    void controllerKeyUpdate(CameraController* controller, float deltaTime);
 
     /** @brief: Check mouse movement controls when mouse movement is detected.
 

@@ -107,6 +107,8 @@
         @param: sph (collider_Sphere* ) - The sphere to be tested.
         @param: box (collider_AABB* ) - The box to be tested.
 
+        NOTE: Current implementation only tests sphere <-> box FACE collisions.
+
         @return: 1 (TRUE) if the two colliders are currently colliding, else 0 (FALSE).
     **/
     short collisionCollideSB(collider_Sphere* sph, collider_AABB* box);
@@ -124,34 +126,46 @@
 
         @param: coll_1 (collider_Sphere* ) - The first collider to be tested.
         @param: coll_2 (collider_Sphere* ) - The second collider to be tested.
-        @param: normal_1 (point3) - The collision normal of the FIRST collider (coll_1 param).
-        @param: normal_2 (point3) - The collision normal of the SECOND collider (coll_2 param).
+        @param: norm_sph1X (float* ) - The X value of the collision normal of the FIRST collider (coll_1 param).
+        @param: norm_sph1Y (float* ) - The Y value of the collision normal of the FIRST collider (coll_1 param).
+        @param: norm_sph1Z (float* ) - The Z value of the collision normal of the FIRST collider (coll_1 param).
+        @param: norm_sph2X (float* ) - The X value of the collision normal of the SECOND collider (coll_2 param).
+        @param: norm_sph2Y (float* ) - The Y value of the collision normal of the SECOND collider (coll_2 param).
+        @param: norm_sph2Z (float* ) - The Z value of the collision normal of the SECOND collider (coll_2 param).
 
-        @return: NONE.
+        @return: (float) - The penetration depth of the collision.
     **/
-    void collisionFindNormalSS(collider_Sphere* coll_1, collider_Sphere* coll_2, point3 normal_1, point3 normal_2);
+    float collisionFindNormalSS(collider_Sphere* coll_1, collider_Sphere* coll_2, float* norm_sph1X, float* norm_sph1Y, float* norm_sph1Z, float* norm_sph2X, float* norm_sph2Y, float* norm_sph2Z);
 
     /** @brief: Find the collision normals for a sphere colliding with a box.
 
         @param: coll_1 (collider_Sphere* ) - The first collider to be tested.
         @param: coll_2 (collider_AABB* ) - The second collider to be tested.
-        @param: normal_1 (point3) - The collision normal of the FIRST collider (coll_1 param).
-        @param: normal_2 (point3) - The collision normal of the SECOND collider (coll_2 param).
+        @param: norm_sphX (float* ) - The X value of the collision normal of the FIRST collider (coll_1 param).
+        @param: norm_sphY (float* ) - The Y value of the collision normal of the FIRST collider (coll_1 param).
+        @param: norm_sphZ (float* ) - The Z value of the collision normal of the FIRST collider (coll_1 param).
+        @param: norm_boxX (float* ) - The X value of the collision normal of the SECOND collider (coll_2 param).
+        @param: norm_boxY (float* ) - The Y value of the collision normal of the SECOND collider (coll_2 param).
+        @param: norm_boxZ (float* ) - The Z value of the collision normal of the SECOND collider (coll_2 param).
 
-        @return: NONE.
+        @return: (float) - The penetration depth of the collision.
     **/
-    void collisionFindNormalSB(collider_Sphere* coll_1, collider_AABB* coll_2, point3 normal_1, point3 normal_2);
+    float collisionFindNormalSB(collider_Sphere* coll_1, collider_AABB* coll_2, float* norm_sphX, float* norm_sphY, float* norm_sphZ, float* norm_boxX, float* norm_boxY, float* norm_boxZ);
 
     /** @brief: Find the collision normals for two colliding boxes.
 
         @param: coll_1 (collider_AABB* ) - The first collider to be tested.
         @param: coll_2 (collider_AABB* ) - The second collider to be tested.
-        @param: normal_1 (point3) - The collision normal of the FIRST collider (coll_1 param).
-        @param: normal_2 (point3) - The collision normal of the SECOND collider (coll_2 param).
+        @param: norm_box1X (float* ) - The X value of the collision normal of the SECOND collider (coll_2 param).
+        @param: norm_box1Y (float* ) - The Y value of the collision normal of the SECOND collider (coll_2 param).
+        @param: norm_box1Z (float* ) - The Z value of the collision normal of the SECOND collider (coll_2 param).
+        @param: norm_box2X (float* ) - The X value of the collision normal of the SECOND collider (coll_2 param).
+        @param: norm_box2Y (float* ) - The Y value of the collision normal of the SECOND collider (coll_2 param).
+        @param: norm_box2Z (float* ) - The Z value of the collision normal of the SECOND collider (coll_2 param).
 
-        @return: NONE.
+        @return: (float) - The penetration depth of the collision.
     **/
-    void collisionFindNormalBB(collider_AABB* coll_1, collider_AABB* coll_2, point3 normal_1, point3 normal_2);
+    float collisionFindNormalBB(collider_AABB* coll_1, collider_AABB* coll_2, float* norm_box1X, float* norm_box1Y, float* norm_box1Z, float* norm_box2X, float* norm_box2Y, float* norm_box2Z);
 
     //------------------------   Debug functions.   --------------------------
 

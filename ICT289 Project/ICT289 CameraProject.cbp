@@ -60,6 +60,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="GLWindow.h" />
+		<Unit filename="GameObject.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="GameObject.h" />
+		<Unit filename="Interaction.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Interaction.h" />
 		<Unit filename="PopupMenu.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -68,6 +76,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="PopupMenuFunctions.h" />
+		<Unit filename="RigidBody.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="RigidBody.h" />
+		<Unit filename="Room_and_Ball.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Room_and_Ball.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

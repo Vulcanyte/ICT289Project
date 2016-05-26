@@ -20,25 +20,25 @@ void controllerEditBasicKeyControls(CameraController* controller, char fKey, cha
 {
 
     if(fKey != '\n')
-        controller->camControls->forwardKey = fKey;
+        controller->camControls->forwardKey.key = fKey;
 
     if(bKey != '\n')
-        controller->camControls->backwardKey = bKey;
+        controller->camControls->backwardKey.key = bKey;
 
     if(uKey != '\n')
-        controller->camControls->upKey = uKey;
+        controller->camControls->upKey.key = uKey;
 
     if(dKey != '\n')
-        controller->camControls->downKey = dKey;
+        controller->camControls->downKey.key = dKey;
 
     if(lKey != '\n')
-        controller->camControls->strafe_L = lKey;
+        controller->camControls->strafe_L.key = lKey;
 
     if(rKey != '\n')
-        controller->camControls->strafe_R = rKey;
+        controller->camControls->strafe_R.key = rKey;
 
     if(lockKey != '\n')
-        controller->camControls->mouseLock = lockKey;
+        controller->camControls->mouseLock.key = lockKey;
 
     if(speedMod >= 0)
         controller->speedModifier = speedMod;
@@ -97,70 +97,122 @@ void controllerToggleMouseLock(CameraController* controller)
 
 void controllerCheckKeys(CameraController* controller, char ch)
 {
+    if(ch == controller->camControls->forwardKey.key)
+    {
+        controller->camControls->forwardKey.down = (controller->camControls->forwardKey.down == 0) ? 1 : 0;
+    }
+    else
+    if(ch == controller->camControls->backwardKey.key)
+    {
+        controller->camControls->backwardKey.down = (controller->camControls->backwardKey.down == 0) ? 1 : 0;
+    }
+    else
+    if(ch == controller->camControls->upKey.key)
+    {
+        controller->camControls->upKey.down = (controller->camControls->upKey.down == 0) ? 1 : 0;
+    }
+    else
+    if(ch == controller->camControls->downKey.key)
+    {
+        controller->camControls->downKey.down = (controller->camControls->downKey.down == 0) ? 1 : 0;
+    }
+    else
+    if(ch == controller->camControls->strafe_L.key)
+    {
+        controller->camControls->strafe_L.down = (controller->camControls->strafe_L.down == 0) ? 1 : 0;
+    }
+    else
+    if(ch == controller->camControls->strafe_R.key)
+    {
+        controller->camControls->strafe_R.down = (controller->camControls->strafe_R.down == 0) ? 1 : 0;
+    }
+    else
+    if(ch == controller->camControls->mouseLock.key)
+    {
+        controllerToggleMouseLock(controller);
+    }
 
-    if(ch == controller->camControls->forwardKey)
+    return;
+}
+
+void controllerKeyUpdate(CameraController* controller, float deltaTime)
+{
+    if(controller->camControls->forwardKey.down)
     {
         if(controller->typeOfController == TOP_DOWN)
             controller->cam->position[1] += -1 * controller->speedModifier;
         else
         {
-            controller->cam->position[0] += 1 * controller->speedModifier * controller->cam->lookAt[0];
-            controller->cam->position[2] += 1 * controller->speedModifier * controller->cam->lookAt[2];
-        }
+            float directionMod = 1.0f;
 
-        return;
+            if(controller->camControls->strafe_L.down || controller->camControls->strafe_R.down)
+            {
+                directionMod *= sin(45);
+            }
+
+            controller->cam->position[0] += directionMod * controller->speedModifier * controller->cam->lookAt[0] * deltaTime;
+            controller->cam->position[2] += directionMod * controller->speedModifier * controller->cam->lookAt[2] * deltaTime;
+        }
     }
 
-    if(ch == controller->camControls->backwardKey)
+    if(controller->camControls->backwardKey.down)
     {
         if(controller->typeOfController == TOP_DOWN)
             controller->cam->position[1] += 1 * controller->speedModifier;
         else
         {
-            controller->cam->position[0] += -1 * controller->speedModifier * controller->cam->lookAt[0];
-            controller->cam->position[2] += -1 * controller->speedModifier * controller->cam->lookAt[2];
-        }
+            float directionMod = 1.0f;
 
-        return;
+            if(controller->camControls->strafe_L.down || controller->camControls->strafe_R.down)
+            {
+                directionMod *= sin(45);
+            }
+
+            controller->cam->position[0] += -directionMod * controller->speedModifier * controller->cam->lookAt[0] * deltaTime;
+            controller->cam->position[2] += -directionMod * controller->speedModifier * controller->cam->lookAt[2] * deltaTime;
+        }
     }
 
-    if(ch == controller->camControls->upKey)
+    if(controller->camControls->upKey.down)
     {
         if(controller->typeOfController == TOP_DOWN)
             controller->cam->position[2] += 1 * controller->speedModifier;
         else
-            controller->cam->position[1] += 1 * controller->speedModifier;
-        return;
+            controller->cam->position[1] += 1 * controller->speedModifier * deltaTime;
     }
 
-    if(ch == controller->camControls->downKey)
+    if(controller->camControls->downKey.down)
     {
         if(controller->typeOfController == TOP_DOWN)
             controller->cam->position[2] += -1 * controller->speedModifier;
         else
-            controller->cam->position[1] += -1 * controller->speedModifier;
-        return;
+            controller->cam->position[1] += -1 * controller->speedModifier * deltaTime;
     }
 
-    if(ch == controller->camControls->strafe_L)
+    if(controller->camControls->strafe_L.down)
     {
-        controller->cam->position[0] += -1 * controller->speedModifier * controller->cam->rightVector[2];
-        controller->cam->position[2] += -1 * controller->speedModifier * controller->cam->rightVector[0];
-        return;
+        float directionMod = 1.0f;
+
+        if(controller->camControls->forwardKey.down || controller->camControls->backwardKey.down)
+        {
+            directionMod *= sin(45);
+        }
+
+        controller->cam->position[0] += -directionMod * controller->speedModifier * controller->cam->rightVector[2] * deltaTime;
+        controller->cam->position[2] += -directionMod * controller->speedModifier * controller->cam->rightVector[0] * deltaTime;
     }
 
-    if(ch == controller->camControls->strafe_R)
+    if(controller->camControls->strafe_R.down)
     {
-        controller->cam->position[0] += 1 * controller->speedModifier * controller->cam->rightVector[2];
-        controller->cam->position[2] += 1 * controller->speedModifier * controller->cam->rightVector[0];
-        return;
-    }
+        float directionMod = 1.0f;
 
-    if(ch == controller->camControls->mouseLock)
-    {
-        controllerToggleMouseLock(controller);
+        if(controller->camControls->forwardKey.down || controller->camControls->backwardKey.down)
+        {
+            directionMod *= sin(45);
+        }
 
-        return;
+        controller->cam->position[0] += directionMod * controller->speedModifier * controller->cam->rightVector[2] * deltaTime;
+        controller->cam->position[2] += directionMod * controller->speedModifier * controller->cam->rightVector[0] * deltaTime;
     }
 }
 
