@@ -1,6 +1,8 @@
 
 #include "GameObject.h"
 
+extern const float FRAMERATE;
+
 void* gameObjectGetComponent(GameObject* object, componentType type, int index)
 {
     int i = 0;          // For incrementing through the entire contents of a game object's components.
@@ -51,11 +53,26 @@ void gameObjectInit(GameObject* object, float posX, float posY, float posZ, Game
 
 void gameObjectUpdate(GameObject* object)
 {
+
     // Iterate through the attached componentns and update relevant information.
     int i = 0;
+
+    // First pass, change parameters of a game object if it contains a RigidBody component.
     for(i = 0; i < object->numComponents; i++)
     {
-        gameObjectUpdateComponent(object, object->components[i].component, object->components[i].type);
+        if(object->components[i].type == RIGIDBODY)
+        {
+            gameObjectUpdateComponent(object, object->components[i].component, RIGIDBODY);
+            // Only update gameobject based on the first RigidBody instance. There should only be one RigidBody, but this break ensures multiple have no adverse effects.
+            break;
+        }
+    }
+
+    // Second pass, change shared parameters of all other component types based on the current state of the gameObject struct.
+    for(i = 0; i < object->numComponents; i++)
+    {
+        if(object->components[i].type != RIGIDBODY)
+            gameObjectUpdateComponent(object, object->components[i].component, object->components[i].type);
     }
 }
 
@@ -68,12 +85,14 @@ void gameObjectUpdateComponent(GameObject* object, void* component, componentTyp
             break;
 
         case COLL_SPHERE:
+
             ((collider_Sphere*)component)->position[0] = object->position[0] + ((collider_Sphere*)component)->offset[0];
             ((collider_Sphere*)component)->position[1] = object->position[1] + ((collider_Sphere*)component)->offset[1];
             ((collider_Sphere*)component)->position[2] = object->position[2] + ((collider_Sphere*)component)->offset[2];
             break;
 
         case COLL_BOX:
+
             ((collider_AABB*)component)->position[0] = object->position[0] + ((collider_AABB*)component)->offset[0];
             ((collider_AABB*)component)->position[1] = object->position[1] + ((collider_AABB*)component)->offset[1];
             ((collider_AABB*)component)->position[2] = object->position[2] + ((collider_AABB*)component)->offset[2];
@@ -81,6 +100,11 @@ void gameObjectUpdateComponent(GameObject* object, void* component, componentTyp
 
         case RIGIDBODY:
 
+            physicsUpdate((RigidBody*)component, FRAMERATE, 2);
+
+            gameObjectSetPos(object, ((RigidBody*)component)->position[0],
+                                     ((RigidBody*)component)->position[1],
+                                     ((RigidBody*)component)->position[2]);
             break;
 
         default:

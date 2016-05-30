@@ -13,6 +13,7 @@
 #include "FileIO.h"
 #include "GameObject.h"
 #include "Room_and_Ball.h"
+#include "RigidBody.h"
 
 // Core Program Parameters.
 GL_Window programWindow;
@@ -31,17 +32,8 @@ GL_PopupMenu subMenuTest;
 GL_PopupMenuEntry testOptions[] = {{"Red", 1}, {"Blue", 2}, {"GREEN", 3}, {"ORANGE", 4}};
 GL_PopupMenuEntry subTestOptions[] = {{"SUB Red", 1}, {"SUB Blue", 2}, {"SUB Green", 3}, {"SUB Orange", 4}};
 
-// Collision Detection-related Parameters.
-collider_Sphere sphere1;
-collider_Sphere sphere2;
-collider_AABB box1;
-collider_AABB box2;
-point3 normal1 = {0,0,0};
-point3 normal2 = {0,0,0};
-point3 normal3 = {0,0,0};
-point3 normal4 = {0,0,0};
-
 // GUI-related Parameters.
+
 GUItext mouseLockText;
 GUItext posText;
 GUItext lookText;
@@ -76,7 +68,9 @@ GUIframeEntry controlDisplayFrameOptions[] = {  {&controlDisplay_forward, GUI_TE
 
 // Ball GameObject params.
 collider_Sphere ballBounds;
+RigidBody ballPhysics;
 GameObject ball;
+GameObjectComponent ballComponents[] = {{&ballBounds, COLL_SPHERE}, {&ballPhysics, RIGIDBODY}};
 
 // Room GameObject params.
 collider_AABB roomFloor;
@@ -88,6 +82,8 @@ collider_AABB roomRoof;
 GameObject room;
 GameObjectComponent roomComponents[] = {{&roomFloor, COLL_BOX}, {&roomWall_N, COLL_BOX}, {&roomWall_S, COLL_BOX}, {&roomWall_E, COLL_BOX}, {&roomWall_W, COLL_BOX}, {&roomRoof, COLL_BOX}};
 
+collider_AABB* roomSurfaces[] = {&roomFloor, &roomWall_N, &roomWall_S, &roomWall_E, &roomWall_W, &roomRoof};
+
 // Player GameObject params.
 collider_Sphere playerRange;
 point3 playerRangeNormal;
@@ -95,6 +91,11 @@ collider_AABB playerBody;
 GameObject player;
 GameObjectComponent playerComponents[] = {{&playerRange, COLL_SPHERE}, {&playerBody, COLL_BOX}};
 
+void printPoint(point3 p)
+{
+    printf("%1.3f, %1.3f, %1.3f\n", p[0], p[1], p[2]);
+    return;
+}
 
 void myinit( void )
 {
@@ -111,7 +112,7 @@ void myinit( void )
 
             // Bind the camera to some controls.
             controllerBindCameraToKeys(&controller, &cam, &controlKeys, FIRST_PERSON);
-            controllerEditBasicKeyControls(&controller, 'w', 's', 'q', 'e', 'a', 'd', 'c', 200.0f);
+            controllerEditBasicKeyControls(&controller, 'w', 's', 'q', 'e', 'a', 'd', 'c', 400.0f);
             controllerEditMouseControls(&controller, 0.005f, 0.005f);
 
             // Enable depth testing.
@@ -123,6 +124,15 @@ void myinit( void )
 
             GLPopupMenuCreateSub(&mainMenu, &subMenuTest);
 
+    // --------------------   Set up the GameObjects.   --------------------
+
+            // Set up the player.
+            gameObjectInit(&player, cam.position[0], cam.position[1], cam.position[2], playerComponents, 2);
+            gameObjectUpdate(&player);
+
+            // Set up the ball.
+            gameObjectInit(&ball, 0,200,0, ballComponents, 2);
+
     // --------------------   Set up the collision colliders.   --------------------
 
             // Initialise the player colliders.
@@ -133,23 +143,26 @@ void myinit( void )
             collisionInit_S(&ballBounds, 0, 0, 0, 30);
 
             // Initialise the room colliders.
-            collisionInit_B(&roomFloor, 0, 0, 0, 1000, 10, 1000);
-            collisionInit_B(&roomWall_N, 0, 250, 500, 1000, 500, 10);
-            collisionInit_B(&roomWall_S, 0, 250, -500, 1000, 500, 10);
-            collisionInit_B(&roomWall_E, 500, 250, 0, 10, 500, 1000);
-            collisionInit_B(&roomWall_W, -500, 250, 0, 10, 500, 1000);
-            collisionInit_B(&roomRoof, 0, 500, 0, 1000, 10, 1000);
+            collisionInit_B(&roomFloor, 0, 0, 0, 1000, 100, 1000);
+            collisionInit_B(&roomWall_N, 0, 250, 500, 1000, 500, 100);
+            collisionInit_B(&roomWall_S, 0, 250, -500, 1000, 500, 100);
+            collisionInit_B(&roomWall_E, 500, 250, 0, 100, 500, 1000);
+            collisionInit_B(&roomWall_W, -500, 250, 0, 100, 500, 1000);
+            collisionInit_B(&roomRoof, 0, 500, 0, 1000, 100, 1000);
 
             collisionDebug_Toggle(1);
 
-    // --------------------   Set up the GameObjects.   --------------------
+    // --------------------   Set up the RigidBodies.   --------------------
 
-            // Set up the player.
-            gameObjectInit(&player, cam.position[0], cam.position[1], cam.position[2], playerComponents, 2);
-            gameObjectUpdate(&player);
+            physicsInit(&ballPhysics, 1, 1.0f, 1, 1, 0);
+            physicsSetPosition(&ballPhysics, ball.position[0], ball.position[1], ball.position[2]);
 
     // --------------------   Set up the GUI.   --------------------
             // Initialise individual elements.
+
+            // Set the default GUI text color to BLACK.
+            GUIsetTextColor(0.0f, 0.0f, 0.0f);
+
             GUInewLine(&HUDtop, 0, 20, 302, 20, 10.0f, 1.0, 1.0, 0.0);
             GUInewLine(&HUDside, 300, 15, 300, 203, 5.0f, 1.0, 0.5, 0.0);
             GUInewLine(&HUDbottom, 0, 200, 300, 200, 5.0f, 1.0, 0.5, 0.0);
@@ -226,34 +239,61 @@ void FrameUpdate(int value)
 {
     glutTimerFunc(FRAMERATE_MILLIS, FrameUpdate, 0);
 
-    // Call display function...
-    glutPostRedisplay();
-
     controllerKeyUpdate(&controller, FRAMERATE);
-
-    // --------------------   START GameObject test code.   --------------------
 
     gameObjectSetPos(&player, cam.position[0], cam.position[1], cam.position[2]);
     collisionOffset_S(&playerRange, cam.lookAt[0] * 100, cam.lookAt[1] * 100, cam.lookAt[2] * 100);
     gameObjectUpdate(&player);
-    //gameObjectRender(&player);
 
-    // --------------------   STOP GameObject test code.   --------------------
-}
+    // Keep the player within the room using the below code.
+    int i = 0;
+    for(i = 0; i < 6; i++)
+        if(collisionCollideBB(&playerBody, roomSurfaces[i]))
+        {
 
-void PhysicsUpdate(int value)
-{
-    glutTimerFunc(PHYSICS_MILLIS, FrameUpdate, 0);
+            point3 normal1 = {0,0,0};
+            point3 normal2 = {0,0,0};
 
-    // Code any physics stuff below...
+            float penetration = collisionFindNormalBB(&playerBody, roomSurfaces[i], &normal1[0], &normal1[1], &normal1[2], &normal2[0], &normal2[1], &normal2[2]);
+
+            playerBody.position[0] -= -normal1[0] * penetration + normal1[0];
+            playerBody.position[1] -= -normal1[1] * penetration + normal1[1];
+            playerBody.position[2] -= -normal1[2] * penetration + normal1[2];
+        }
+
+    // Update the camera's position.
+    cam.position[0] = playerBody.position[0];
+    cam.position[1] = playerBody.position[1];
+    cam.position[2] = playerBody.position[2];
+
+    // Update the camera.
+    cameraUpdate(&cam);
+
+    if(collisionCollideSB(&ballBounds, &roomFloor))
+    {
+        point3 normal1 = {0,0,0};
+        point3 normal2 = {0,0,0};
+
+        float penetration = collisionFindNormalSB(&ballBounds, &roomFloor, &normal1[0], &normal1[1], &normal1[2], &normal2[0], &normal2[1], &normal2[2]);
+
+        ballPhysics.position[0] -= -normal1[0] * penetration;
+        ballPhysics.position[1] -= -normal1[1] * penetration;
+        ballPhysics.position[2] -= -normal1[2] * penetration;
+
+        ballPhysics.velocity[0] *= abs(normal1[0]) * (ballPhysics.velocity[0] * -1 * ballPhysics.bounceDecay);
+        ballPhysics.velocity[1] *= abs(normal1[1]) * (ballPhysics.velocity[1] * -1 * ballPhysics.bounceDecay);
+        ballPhysics.velocity[2] *= abs(normal1[2]) * (ballPhysics.velocity[2] * -1 * ballPhysics.bounceDecay);
+    }
+
+    gameObjectUpdate(&ball);
+
+    // Update the screen.
+    glutPostRedisplay();
 }
 
 void display( void )
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // Update the camera.
-    cameraUpdate(&cam);
 
     // --------------------   START Drawing the GUI.   --------------------
     GUIenable2DRendering(&programWindow);
@@ -274,7 +314,11 @@ void display( void )
     collisionDebug_DrawB(&roomWall_W);
     collisionDebug_DrawB(&roomRoof);
 
-    drawRoom(100.0f);
+    collisionDebug_DrawS(&ballBounds);
+
+    //drawRoom(100.0f);
+
+    //gameObjectRender(&player);
 
     // --------------------   STOP drawing the environment.   --------------------
 
@@ -310,7 +354,6 @@ int main( int argc, char** argv )
 
     // Timer functions.
     glutTimerFunc(FRAMERATE_MILLIS, FrameUpdate, 0);
-    glutTimerFunc(PHYSICS_MILLIS, FrameUpdate, 0);
 
     // OpenGL main loop.
     glutMainLoop();

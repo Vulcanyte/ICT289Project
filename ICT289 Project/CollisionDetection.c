@@ -105,6 +105,7 @@ short collisionCollideBB(collider_AABB* box1, collider_AABB* box2)
     if(box1->position[0] - 0.5f * box1->sizeX > box2->position[0] + 0.5f * box2->sizeX) coll = 0;   // FALSE.
     else
 
+    // Test Y axis.
     if(box1->position[1] + 0.5f * box1->sizeY < box2->position[1] - 0.5f * box2->sizeY) coll = 0;   // FALSE.
     else
     if(box1->position[1] - 0.5f * box1->sizeY > box2->position[1] + 0.5f * box2->sizeY) coll = 0;   // FALSE.
@@ -117,7 +118,8 @@ short collisionCollideBB(collider_AABB* box1, collider_AABB* box2)
 
     box1->isColliding = coll;
     box2->isColliding = coll;
-    return 1;
+
+    return coll;
 }
 
 float collisionFindNormalSS(collider_Sphere* coll_1, collider_Sphere* coll_2, float* norm_sph1X, float* norm_sph1Y, float* norm_sph1Z, float* norm_sph2X, float* norm_sph2Y, float* norm_sph2Z)

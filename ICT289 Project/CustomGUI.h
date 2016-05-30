@@ -212,4 +212,14 @@
     **/
     void GUIdisableFrame(GUIframe* frame);
 
+    /** @brief: Set the color of all GUI text elements.
+
+        @param: r (float) - The R channel of the GUI's color.
+        @param: g (float) - The G channel of the GUI's color.
+        @param: b (float) - The B channel of the GUI's color.
+
+        @return: NONE.
+    **/
+    void GUIsetTextColor(float r, float g, float b);
+
 #endif

@@ -4,6 +4,8 @@
 #include <memory.h>
 #include <stdlib.h>
 
+point3 textColor = {0.0f, 0.0f, 0.0f};
+
 void GUInewLine(GUIline* newLine, float startX, float startY, float endX, float endY, float thickness, float colorR, float colorG, float colorB)
 {
     // Set the origin point.
@@ -112,6 +114,7 @@ void GUIrenderText(GUItext* textElement)
     glPushMatrix();
     glLoadIdentity();
 
+    glColor3fv(textColor);
     glRasterPos3fv(textElement->position);
 
     char* extendedText;
@@ -258,7 +261,7 @@ void GUIrenderLine(GUIline* newLine)
     glPopMatrix();
 
     glLineWidth(5.0);
-    glColor3f(1, 0, 0);
+    glColor3fv(textColor);
 }
 
 void GUIrenderFrame(GUIframe* frame)
@@ -317,4 +320,11 @@ void GUIenableFrame(GUIframe* frame)
 void GUIdisableFrame(GUIframe* frame)
 {
     frame->renderON = 0;
+}
+
+void GUIsetTextColor(float r, float g, float b)
+{
+    textColor[0] = r;
+    textColor[1] = g;
+    textColor[2] = b;
 }
