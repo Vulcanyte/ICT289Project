@@ -68,6 +68,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Interaction.h" />
+		<Unit filename="MakeRoom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="MakeRoom.h" />
 		<Unit filename="PopupMenu.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -84,6 +88,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Room_and_Ball.h" />
+		<Unit filename="Texturing.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Texturing.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

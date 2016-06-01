@@ -21,10 +21,10 @@ void changingInteractionKeyControls(interactionController* controller, char pKey
 {
     if(pKey != '\n')
         controller->keybinds->pickUpKey = pKey;
-    
+
     if(tKey != '\n')
         controller->keybinds->throwKey = tKey;
-    
+
     if(eKey != '\n')
         controller->keybinds->exitKey = eKey;
 }
@@ -48,6 +48,6 @@ void moveBallToPlayer(Camera cam)
     collider_Sphere ball; // Creates ball
     GameObjectComponent ballComponent = {&ball, MODEL}; // Makes ball a model
     GameObject gameBall; // Makes a gameObject for ball
-    
-    gameobjectSetPos(gameBall, cam.position[0], cam.position[1], cam.position[2]); // Sets position of ball to in front of the camera.
+
+    gameObjectSetPos(&gameBall, cam.position[0], cam.position[1], cam.position[2]); // Sets position of ball to in front of the camera.
 }

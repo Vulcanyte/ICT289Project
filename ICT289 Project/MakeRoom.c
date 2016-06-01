@@ -26,16 +26,16 @@ void getCubeScale(GLfloat scale)
 void cubeSideOne()
 {
     glBegin(GL_QUADS);
-    
+
     glTexCoord2f(0.0,0.0);
     glVertex3f(-s, -s, -s);
-    
+
     glTexCoord2f(0.0,1.0);
     glVertex3f(s, -s, -s);
-    
+
     glTexCoord2f(1.0,1.0);
     glVertex3f(s, -s, s);
-    
+
     glTexCoord2f(1.0,0.0);
     glVertex3f(-s, -s, s);
 }
@@ -43,16 +43,16 @@ void cubeSideOne()
 void cubeSideTwo()
 {
     glBegin(GL_QUADS);
-    
+
     glTexCoord2f(0.0,0.0);
     glVertex3f(-s, s, -s);
-    
+
     glTexCoord2f(0.0,1.0);
     glVertex3f(s, s, -s);
-    
+
     glTexCoord2f(1.0,1.0);
     glVertex3f(s, s, s);
-    
+
     glTexCoord2f(1.0,0.0);
     glVertex3f(-s, s, s);
 }
@@ -60,16 +60,16 @@ void cubeSideTwo()
 void cubeSideThree()
 {
     glBegin(GL_QUADS);
-    
+
     glTexCoord2f(0.0, 0.0);
     glVertex3f(-s, -s/2, s);
-    
+
     glTexCoord2f(0.0,1.0);
     glVertex3f(s, -s/2, s);
-    
+
     glTexCoord2f(1.0,1.0);
     glVertex3f(s, s, s);
-    
+
     glTexCoord2f(1.0,0.0);
     glVertex3f(-s, s, s);
 }
@@ -77,16 +77,16 @@ void cubeSideThree()
 void cubeSideFour()
 {
     glBegin(GL_QUADS);
-    
+
     glTexCoord2f(0.0, 0.0);
     glVertex3f(-s, -s, -s);
-    
+
     glTexCoord2f(0.0,1.0);
     glVertex3f(s, -s, -s);
-    
+
     glTexCoord2f(1.0,1.0);
     glVertex3f(s, s, -s);
-    
+
     glTexCoord2f(1.0,0.0);
     glVertex3f(-s, s, -s);
 }
@@ -94,16 +94,16 @@ void cubeSideFour()
 void cubeSideFive()
 {
     glBegin(GL_QUADS);
-    
+
     glTexCoord2f(0.0, 0.0);
     glVertex3f(s, s, s);
-    
+
     glTexCoord2f(0.0,1.0);
     glVertex3f(s, -s, s);
-    
+
     glTexCoord2f(0.0,1.0);
     glVertex3f(s, -s, -s);
-    
+
     glTexCoord2f(1.0,0.0);
     glVertex3f(s, s, -s);
 }
@@ -111,16 +111,16 @@ void cubeSideFive()
 void cubeSideSix()
 {
     glBegin(GL_QUADS);
-    
+
     glTexCoord2f(0.0, 0.0);
     glVertex3f(-s, s, s);
-    
+
     glTexCoord2f(0.0,1.0);
     glVertex3f(-s, -s, s);
-    
+
     glTexCoord2f(1.0,1.0);
     glVertex3f(-s, -s, -s);
-    
+
     glTexCoord2f(1.0,0.0);
     glVertex3f(-s, s, -s);
 }
@@ -128,29 +128,29 @@ void cubeSideSix()
 void makeCube()
 {
     glMatrixMode(GL_MODELVIEW);
-    
-    glpushMatrix();
+
+    glPushMatrix();
     cubeSideOne();
-    
+
     glPushMatrix();
     cubeSideTwo();
-    
+
     glPushMatrix();
     cubeSideThree();
-    
+
     glPopMatrix();
     cubeSideFour();
-    
+
     glPushMatrix();
     cubeSideFive();
-    
+
     glPopMatrix();
     cubeSideSix();
-    
+
     glEnd();
-    
-    
+
+
     glPopMatrix();
-    
+
     glFlush();
 }

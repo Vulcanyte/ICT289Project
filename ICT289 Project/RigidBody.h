@@ -16,6 +16,8 @@
 
     #define FLAG_JVPhysics
 
+    typedef enum {PHYS_AIRDECEL = 0, PHYS_GRAVITY = 1, PHYS_SPEED = 2} PhysParam;
+
     typedef struct
     {
         point3 velocity;        // The direction that the rigidbody is currently moving.
@@ -71,11 +73,10 @@
 
         @param: body (RigidBody* ) - The relevant RigidBody object.
         @param: deltaTime (float) - The elapsed time since this function was called.
-        @param: gameSpeed (float) - The speed of the simulation.
 
         @return: NONE.
     **/
-    void physicsUpdate(RigidBody* body, float deltaTime, float gameSpeed);
+    void physicsUpdate(RigidBody* body, float deltaTime);
 
     /** @brief: Set the deceleration due to air resistance in the simulation.
 
@@ -92,6 +93,22 @@
         @return: NONE.
     **/
     void physicsSetGravity(float newValue);
+
+    /** @brief: Set the speed of the physics simulation.
+
+        @param: newValue (float) - The new simulation speed.
+
+        @return: NONE.
+    **/
+    void physicsSetSimulationSpeed(float newValue);
+
+    /** @brief: Get a modifiable parameter from within the physics system.
+
+        @param: param (PhysParam) - Enumeration specifying the requested parameter.
+
+        @return: (float) - The value of the modifiable parameter.
+    **/
+    float physicsGetParam(PhysParam param);
 
 
 #endif

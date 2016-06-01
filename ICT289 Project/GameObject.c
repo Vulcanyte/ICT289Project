@@ -1,7 +1,7 @@
 
 #include "GameObject.h"
 
-extern const float FRAMERATE;
+extern const float FRAMERATE;// = 1 / 60.0f;
 
 void* gameObjectGetComponent(GameObject* object, componentType type, int index)
 {
@@ -100,7 +100,7 @@ void gameObjectUpdateComponent(GameObject* object, void* component, componentTyp
 
         case RIGIDBODY:
 
-            physicsUpdate((RigidBody*)component, FRAMERATE, 2);
+            physicsUpdate((RigidBody*)component, FRAMERATE);
 
             gameObjectSetPos(object, ((RigidBody*)component)->position[0],
                                      ((RigidBody*)component)->position[1],

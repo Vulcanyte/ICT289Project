@@ -218,13 +218,13 @@ float collisionFindNormalSB(collider_Sphere* coll_1, collider_AABB* coll_2, floa
             break;
 
         case 3:
-            *norm_sphY = 1;
-            *norm_boxY = -1;
+            *norm_sphY = -1;
+            *norm_boxY = 1;
             break;
 
         case 4:
-            *norm_sphZ = -1;
-            *norm_boxZ = 1;
+            *norm_sphZ = 1;
+            *norm_boxZ = -1;
             break;
 
         case 5:
@@ -251,6 +251,8 @@ float collisionFindNormalSB(collider_Sphere* coll_1, collider_AABB* coll_2, floa
             glVertex3f(coll_2->position[0] + *norm_boxZ * 100, coll_2->position[1] + *norm_boxY * 100, coll_2->position[2] + *norm_boxZ * 100);
         glEnd();
     }
+
+    printf("%1.3f", min);
 
     return min;
 }
