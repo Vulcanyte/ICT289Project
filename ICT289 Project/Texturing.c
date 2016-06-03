@@ -91,3 +91,12 @@ void initTextures()
     glEnable(GL_TEXTURE_2D);
 }
 
+void initialise()
+{
+    glEnable(GL_DEPTH_TEST); // enables depth buffer
+    
+    glClearDepth(1.0); // set the depth buffer for clearing
+    
+    initTextures(); // start texture mapping
+}
+

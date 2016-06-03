@@ -1,6 +1,10 @@
 
 // External headers.
-#include <gl/freeglut.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 // Local headers.
 #include "DrawablePrimitives.h"
@@ -12,8 +16,9 @@
 #include "CollisionDetection.h"
 #include "FileIO.h"
 #include "GameObject.h"
-#include "Room_and_Ball.h"
 #include "RigidBody.h"
+#include "Texturing.h"
+#include "Interaction.h"
 
 // Core Program Parameters.
 GL_Window programWindow;
@@ -110,6 +115,7 @@ void myinit( void )
     glLineWidth(5.0);
 
     // --------------------   Set up the camera.   --------------------
+    
             cameraInit(&cam, -500, 500, -500, 500, 0.01f, 10000.0f, 45, 1, PERSPECTIVE);
             cameraOrientate_f(&cam, -100, 180, 200, 150, 100, 0);
 
@@ -124,8 +130,19 @@ void myinit( void )
 
             // Enable depth testing.
             glEnable(GL_DEPTH_TEST);
+    
+    // --------------------   Set up the interaction.   --------------------
+    
+            // Set up interaction control structs.
+            interactionController* interController;
+            interactionControlKeys* interControls;
+    
+            // Bind control keys.
+            bindKeysToControls(interController, &playerBody, interControls);
+            changingInteractionKeyControls(interController, 'f', 't', 'm');
 
     // --------------------   Set up the popup menus.   --------------------
+    
             GLPopupMenuCreate(&mainMenu, "Main Menu", testMenuFunct, GLUT_MIDDLE_BUTTON, testOptions, 4);
             GLPopupMenuCreate(&subMenuTest, "SubMenu", testSubMenuFunc, -1, subTestOptions, 4);
 

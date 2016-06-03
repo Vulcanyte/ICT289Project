@@ -36,7 +36,7 @@
  @param fp (FILE *) - A pointer to the image file being opened.
  
  @return: NONE.
- **/
+**/
 void readImage();
 
 /** @brief: Textures the model.
@@ -46,7 +46,13 @@ void readImage();
  @param: border (GLint) - No border = 0.
  
  @return: NONE.
- **/
+**/
 void initTextures();
+
+/** @brief: Applies texture to the model.
+ 
+ @return: NONE.
+**/
+void initialise()
 
 #endif /* Texturing_h */
