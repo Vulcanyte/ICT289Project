@@ -1,9 +1,9 @@
 #include "RigidBody.h"
 
-float physicsGravity = 9.8f;        // The acceleration force of gravity.
-float physicsAirDeceleration = 0.1f;     // Decay rate of horizontal movement. Represents air resistance.
-float terminalVelocity = -144;      // Maximum downwards velocity that an object can move with only the force of gravity.
-float gameSpeed = 1.0f;
+float physicsGravity = 9.8f;            // The acceleration force of gravity.
+float physicsAirDeceleration = 0.1f;    // Decay rate of horizontal movement. Represents air resistance.
+float terminalVelocity = -144;          // Maximum downwards velocity that an object can move with only the force of gravity.
+float gameSpeed = 1.0f;                 // The speed of the physics simulation.
 
 void physicsInit(RigidBody* body, float mass, float bounceDecay, short gravity, short active, short staticObject)
 {
@@ -29,7 +29,7 @@ void physicsSetPosition(RigidBody* body, float posX, float posY, float posZ)
     body->position[2] = posZ;
 }
 
-void physicsAddForce(RigidBody* body, float forceX, float forceY, float forceZ)
+void physicsAddVelocity(RigidBody* body, float forceX, float forceY, float forceZ)
 {
     body->velocity[0] += forceX;
     body->velocity[1] += forceY;

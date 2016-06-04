@@ -164,8 +164,8 @@ void myinit( void )
 
             physicsInit(&ballPhysics, 1, 0.8f, 1, 1, 0);
             physicsSetPosition(&ballPhysics, ball.position[0], ball.position[1], ball.position[2]);
-            physicsAddForce(&ballPhysics, -100, 0, 20);
-            physicsSetAirDeceleration(5.0f);
+            physicsAddVelocity(&ballPhysics, -100, 0, 20);
+            physicsSetAirDeceleration(2.0f);
 
     // --------------------   Set up the GUI.   --------------------
 

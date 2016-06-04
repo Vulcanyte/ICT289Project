@@ -16,8 +16,10 @@
 
     #define FLAG_JVPhysics
 
+    /// enumeration specifying a global physics simulation parameter.
     typedef enum {PHYS_AIRDECEL = 0, PHYS_GRAVITY = 1, PHYS_SPEED = 2} PhysParam;
 
+    /// Data container for physics simulation of a rigid body.
     typedef struct
     {
         point3 velocity;        // The direction that the rigidbody is currently moving.
@@ -67,7 +69,7 @@
 
         @return: NONE.
     **/
-    void physicsAddForce(RigidBody* body, float forceX, float forceY, float forceZ);
+    void physicsAddVelocity(RigidBody* body, float forceX, float forceY, float forceZ);
 
     /** @brief: Update a rigidBody object's physics.
 

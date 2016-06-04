@@ -34,10 +34,6 @@
     {
         point3 position;
 
-        // (Currently rotation and scale are not necessary.)
-        //point3 rotation;
-        //point3 scale;
-
         GameObjectComponent* components;
         int numComponents;
 

@@ -110,9 +110,7 @@ void cameraUpdate(Camera* cam)
 
     if(cam->CamType == ORTHOGONAL || cam->CamType == PERSPECTIVE)
     {
-        //point3 rot = {cam->lookAt[0] + cam->rotation[0], cam->lookAt[1] + cam->rotation[1], cam->lookAt[2] + cam->rotation[2]};
         point3 rot = {cam->lookAt[0] + cam->position[0], cam->lookAt[1] + cam->position[1], cam->lookAt[2] + cam->position[2]};
-        //point3 rot = {cam->position[0] + cam->rotation[0], cam->position[1] + cam->rotation[1], cam->position[2] + cam->rotation[2]};
         gluLookAt(cam->position[0], cam->position[1], cam->position[2], rot[0], rot[1], rot[2], 0,1,0);
         return;
     }

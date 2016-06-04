@@ -1,7 +1,7 @@
 
 #include "GameObject.h"
 
-extern const float FRAMERATE;// = 1 / 60.0f;
+extern const float FRAMERATE;
 
 void* gameObjectGetComponent(GameObject* object, componentType type, int index)
 {

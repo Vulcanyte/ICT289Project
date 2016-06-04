@@ -252,8 +252,6 @@ float collisionFindNormalSB(collider_Sphere* coll_1, collider_AABB* coll_2, floa
         glEnd();
     }
 
-    printf("%1.3f", min);
-
     return min;
 }
 
@@ -348,6 +346,16 @@ float collisionFindNormalBB(collider_AABB* coll_1, collider_AABB* coll_2, float*
     return penetrations[minIndex];
 }
 
+void collisionDebug_Toggle(short newDebugMode)
+{
+    debugMode = newDebugMode;
+}
+
+short collisionDebug_FlagStatus()
+{
+    return debugMode;
+}
+
 void collisionDebug_DrawS(collider_Sphere* sph)
 {
     // Only draw the collider if Debug Mode is on.
@@ -434,16 +442,6 @@ void collisionDebug_DrawB(collider_AABB* box)
 
         glPopMatrix();
     }
-}
-
-void collisionDebug_Toggle(short newDebugMode)
-{
-    debugMode = newDebugMode;
-}
-
-short collisionDebug_FlagStatus()
-{
-    return debugMode;
 }
 
 void collisionDebug_PosColor(float r, float g, float b)
