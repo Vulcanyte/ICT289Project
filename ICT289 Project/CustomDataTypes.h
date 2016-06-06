@@ -18,7 +18,13 @@
     /// An integer version of a point2.
     typedef int int2[2];
 
-    /// A Glubyte array for textureing representing red, green and blue
+    /// A GLubyte array for textureing representing red, green and blue.
     typedef GLubyte pixel[3];
+
+    /// A GLybyte for one byte for each pixel.
+    typedef GLubyte pixelSingle;
+
+    /// An Array for texuture names.
+    typedef char name[15];
 
 #endif
