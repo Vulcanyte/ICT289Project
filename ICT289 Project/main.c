@@ -287,19 +287,19 @@ void myinit( void )
 
             GUInewFrame(&borderFrame, 4, borderFrameOptions, 3);
 
-            texPlaneInit(&testPlane, 0, 250, 451, 1000, 500, "\\IMG\\bush1.raw");
+            texPlaneInit(&testPlane, 0, 250, 451, 1000, 500, "\\IMG\\BrickWall.raw");
             texPlaneSetRotation(&testPlane, 0, 180, 0);
 
-            texPlaneInit(&testPlane2, 0, 250, -451, 1000, 500, "\\IMG\\bush1.raw");
+            texPlaneInit(&testPlane2, 0, 250, -451, 1000, 500, "\\IMG\\BrickWall.raw");
             texPlaneSetRotation(&testPlane2, 0, 0, 0);
 
-            texPlaneInit(&testPlane3, -451, 250, 0, 1000, 500, "\\IMG\\link.raw");
+            texPlaneInit(&testPlane3, -451, 250, 0, 1000, 500, "\\IMG\\BrickWall.raw");
             texPlaneSetRotation(&testPlane3, 0, 90, 0);
 
-            texPlaneInit(&testPlane4, 451, 250, 0, 1000, 500, "\\IMG\\link.raw");
+            texPlaneInit(&testPlane4, 451, 250, 0, 1000, 500, "\\IMG\\BrickWall.raw");
             texPlaneSetRotation(&testPlane4, 0, -90, 0);
 
-            texPlaneInit(&testPlane5, 0, 0, 0, 1000, 1000, "\\IMG\\link.raw");
+            texPlaneInit(&testPlane5, 0, 0, 0, 1000, 1000, "\\IMG\\Floor.raw");
             texPlaneSetRotation(&testPlane5, -90, 0, 0);
 
             glEnable(GL_TEXTURE_2D);
