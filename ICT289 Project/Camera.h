@@ -40,6 +40,7 @@
 
         int2 mouseOrigin;           // The old co-ordinates for the screen centre point of the mouse. Used for mouse rotation control.
         point2 mouseOriginDelta;    // The new co-ordinates for the screen centre point of the mouse. Used for mouse rotation control.
+        int2 mouseCentre;           // The window co-ordinates that represents the centre of the window.
 
         Camera_Type CamType;        // Camera projection type specification.
 

@@ -21,27 +21,6 @@
 #include <GL/glut.h>
 #endif
 
-/** @brief: Reads the image file and takes away the important variables from it.
-
- @param: w (int) - Temp int for width.
- @param: h (int) - Temp int for height.
- @param: max (int) - Max intensity.
- @param: i (int) - Int for looping.
- @param: j (int) - Int for looping.
- @param: r (unsigned int) - Red.
- @param: g (unsigned int) - Green.
- @param: b (unsigned int) - Blue.
- @param: k (int) - A temp variable used to gather the information needed for r, g and b.
- @param: ch (char) - The variable used to take the information from the file and transfer it to the program.
- @param: fp (FILE *) - A pointer to the image file being opened.
-
-=======
-/* @brief: Sets up buffers for texturing.
-
- @return: NONE.
-//
-void display();
-
 /** @brief: Textures the model.
 
  @param: level (GLint) - The level of detail.
@@ -57,6 +36,7 @@ void initTextures();
  @return: NONE.
 **/
 void initialise();
+
 /** @brief: Gets the image for texturing and returns the useable data.
 
  @param: name (char*) - Name of texture file.

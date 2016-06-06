@@ -227,7 +227,7 @@ void controllerCheckMouse(CameraController* controller, int x, int y)
             controller->mousePos[0] = x;
             controller->mousePos[1] = y;
 
-            if(controller->mousePos[0] != 500 || controller->mousePos[1] != 500)
+            if(controller->mousePos[0] != controller->cam->mouseCentre[0] || controller->mousePos[1] != controller->cam->mouseCentre[1])
             {
                 // Calculate the mouse movement changes.
                 float checkY = controller->cam->mouseOriginDelta[1] - (y - controller->cam->mouseOrigin[1]) * controller->mouseSensitivityY;
@@ -249,10 +249,10 @@ void controllerCheckMouse(CameraController* controller, int x, int y)
                 controller->cam->rightVector[0] = controller->cam->lookAt[0];
                 controller->cam->rightVector[2] = -controller->cam->lookAt[2];
 
-                controller->cam->mouseOrigin[0] = 500;
-                controller->cam->mouseOrigin[1] = 500;
+                controller->cam->mouseOrigin[0] = controller->cam->mouseCentre[0];
+                controller->cam->mouseOrigin[1] = controller->cam->mouseCentre[1];
 
-                glutWarpPointer(500, 500);
+                glutWarpPointer(controller->cam->mouseCentre[0], controller->cam->mouseCentre[1]);
             }
         }
         else

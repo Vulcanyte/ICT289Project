@@ -47,7 +47,7 @@ void physicsUpdate(RigidBody* body, float deltaTime)
         // X axis.
         if(body->velocity[0] != 0 && physicsAirDeceleration != 0)
         {
-            if(abs(body->velocity[0]) - (physicsAirDeceleration * deltaTime) >= 0)
+            /*if(abs(body->velocity[0]) - (physicsAirDeceleration * deltaTime) >= 0)
             {
                 if(body->velocity[0] > 0)
                     body->velocity[0] -= physicsAirDeceleration * deltaTime * gameSpeed;
@@ -55,13 +55,20 @@ void physicsUpdate(RigidBody* body, float deltaTime)
                     body->velocity[0] += physicsAirDeceleration * deltaTime * gameSpeed;
             }
             else
-                body->velocity[0] = 0;
+                body->velocity[0] = 0;*/
+
+                body->velocity[0] -= body->velocity[0] * physicsAirDeceleration * deltaTime * gameSpeed;
+        }
+
+        if(body->velocity[1] > 0 && physicsAirDeceleration != 0)
+        {
+                body->velocity[1] -= body->velocity[1] * physicsAirDeceleration * deltaTime * gameSpeed;
         }
 
         // Z axis.
         if(body->velocity[2] != 0 && physicsAirDeceleration != 0)
         {
-            if(abs(body->velocity[2]) - (physicsAirDeceleration * deltaTime) >= 0)
+            /*if(abs(body->velocity[2]) - (physicsAirDeceleration * deltaTime) >= 0)
             {
                 if(body->velocity[2] > 0)
                     body->velocity[2] -= physicsAirDeceleration * deltaTime * gameSpeed;
@@ -69,7 +76,9 @@ void physicsUpdate(RigidBody* body, float deltaTime)
                     body->velocity[2] += physicsAirDeceleration * deltaTime * gameSpeed;
             }
             else
-                body->velocity[2] = 0;
+                body->velocity[2] = 0;*/
+
+            body->velocity[2] -= body->velocity[2] * physicsAirDeceleration * deltaTime * gameSpeed;
         }
 
         body->position[0] += body->velocity[0] * deltaTime * gameSpeed;

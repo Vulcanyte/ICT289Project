@@ -20,13 +20,15 @@
 #include "CustomDataTypes.h"
 #include "CollisionDetection.h"
 #include "Camera.h"
+#include "GameObject.h"
+#include "RigidBody.h"
 
 /// Container for basic interaction key controls.
 typedef struct
 {
-    char pickUpKey;
-    char throwKey;
-    char exitKey;
+    ControlKey pickUpKey;
+    ControlKey throwKey;
+    ControlKey exitKey;
 
 } interactionControlKeys;
 
@@ -77,18 +79,19 @@ void changingInteractionKeyControls(interactionController* controller, char pKey
 
  @return: 1 (TRUE) if the CSs are colliding and the interaction key is being pressed, else 0 (FALSE).
  **/
-short checkForPickUp(collider_Sphere* charCS, collider_Sphere* ballCS, interactionController* controller, char ch);
+short checkForPickUp(collider_Sphere* charCS, collider_Sphere* ballCS, interactionController* controller);
 
 /** @brief: Moves a Collider_Sphere (ball) object to infront of the player's camera.
 
- @param: cam (Camera) - The player's camera.
- @param: ball (Collider_Sphere) - The game ball.
- @param: ballComponent (GameObjectComponet) - Turns the ball into a model.
- @param: gameBall (GameObject) - Gives the ball x, y and z coords.
+ @param: cam (Camera* ) - The player's camera.
+ @param: ball (GameObject* ) - The gameobject representing the ball.
 
  @return: NONE.
 **/
-void moveBallToPlayer(Camera* cam);
+void moveBallToPlayer(interactionController* controller, Camera* cam, GameObject* ball, RigidBody* ballPhysics);
 
+void throwBall(interactionController* controller, Camera* cam, RigidBody* ballPhysics);
+
+void interactionCheckKeys(interactionController* controller, char ch);
 
 #endif /* Interaction_h */

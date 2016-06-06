@@ -17,9 +17,10 @@
     // Add headers for usable components here...
     #include "CollisionDetection.h"
     #include "RigidBody.h"
+    #include "TexturedPlane.h"
 
     /// Enumeration type for specifying which kind of component is attached to a game object.
-    typedef enum {MODEL = 0, COLL_SPHERE = 1, COLL_BOX = 2, RIGIDBODY = 4} componentType;
+    typedef enum {MODEL_TEXPLANE = 0, MODEL_SPHERE = 1, COLL_SPHERE = 2, COLL_BOX = 3, RIGIDBODY = 4} componentType;
 
     /// Entry for a single game object component.
     typedef struct

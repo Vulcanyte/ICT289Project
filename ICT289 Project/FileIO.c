@@ -49,6 +49,8 @@ GLuint fileGetTexImage(char* name)
 
    glGenTextures(1, &tmpTex);    // generate one texture name and return in tmpTex
    glBindTexture(GL_TEXTURE_2D, tmpTex); // bind tmpTex to 2D texture
+   glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, MAXCOL, MAXROW, 0, GL_ALPHA, GL_UNSIGNED_BYTE, image);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    gluBuild2DMipmaps(GL_TEXTURE_2D,3, MAXCOL,MAXROW, GL_RGB, GL_UNSIGNED_BYTE,image);
 
    return tmpTex;

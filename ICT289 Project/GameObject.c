@@ -80,8 +80,10 @@ void gameObjectUpdateComponent(GameObject* object, void* component, componentTyp
 {
     switch(type)
     {
-        case MODEL:
-
+        case MODEL_SPHERE:
+            ((collider_Sphere*)component)->position[0] = object->position[0];
+            ((collider_Sphere*)component)->position[1] = object->position[1];
+            ((collider_Sphere*)component)->position[2] = object->position[2];
             break;
 
         case COLL_SPHERE:
@@ -120,9 +122,19 @@ void gameObjectRender(GameObject* object)
     {
         switch(object->components[i].type)
         {
-            case MODEL:
-                // Render any models here. Ideally there should be a modelRender function that can be called for each model component.
+            case MODEL_TEXPLANE:
+
+                texPlaneDraw(((TexturedPlane*)object->components[i].component));
+
                 break;
+
+            case MODEL_SPHERE:
+
+                glPushMatrix();
+                glTranslatef(object->position[0], object->position[1], object->position[2]);
+                glColor3f(1, 1, 0);
+                glutSolidSphere(((collider_Sphere*)object->components[i].component)->radius, 10, 10);
+                glPopMatrix();
 
             case COLL_SPHERE:
                 collisionDebug_DrawS(((collider_Sphere*)object->components[i].component));

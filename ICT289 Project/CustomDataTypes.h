@@ -27,4 +27,12 @@
     /// An Array for texuture names.
     typedef char name[15];
 
+    /// Representation of a single keyboard key, as well as its down state.
+    typedef struct
+    {
+        char key;       // A certain key.
+        short down;     // TRUE (1) if pushed down, else FALSE (0).
+
+    }ControlKey;
+
 #endif

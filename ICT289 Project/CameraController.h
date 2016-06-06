@@ -15,18 +15,11 @@
     #define FLAG_JVController
 
     #include "Camera.h"
+    #include "CustomDataTypes.h"
 
     // --------------------   Custom Datatypes.   --------------------
     /// Specification for how the camera controls will affect the bound camera.
     typedef enum {FIRST_PERSON = 0, THIRD_PERSON = 1, TOP_DOWN = 2} ControlType;
-
-    /// Representation of a single keyboard key, as well as its down state.
-    typedef struct
-    {
-        char key;       // A certain key.
-        short down;     // TRUE (1) if pushed down, else FALSE (0).
-
-    }ControlKey;
 
     /// Container for basic key controls for reference from within a camera controller struct.
     typedef struct

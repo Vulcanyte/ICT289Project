@@ -29,6 +29,8 @@ void cameraInit(Camera* newCamera, float lPlane, float rPlane, float bPlane, flo
     newCamera->mouseOrigin[1] = -1;
     newCamera->mouseOriginDelta[0] = 0.0f;
     newCamera->mouseOriginDelta[1] = 0.0f;
+    newCamera->mouseCentre[0] = 0;
+    newCamera->mouseCentre[1] = 0;
 
     if(zoom <= 1)
         newCamera->zoomLevel = 1;
