@@ -7,7 +7,7 @@
 
  @Version: 1.0
 **/
-/*
+
 #ifndef Texturing_h
 #define Texturing_h
 
@@ -21,7 +21,6 @@
 #include <GL/glut.h>
 #endif
 
-<<<<<<< HEAD
 /** @brief: Reads the image file and takes away the important variables from it.
 
  @param: w (int) - Temp int for width.
@@ -38,13 +37,11 @@
 
 =======
 /* @brief: Sets up buffers for texturing.
- 
->>>>>>> origin/master
+
  @return: NONE.
 //
 void display();
 
-<<<<<<< HEAD
 /** @brief: Textures the model.
 
  @param: level (GLint) - The level of detail.
@@ -60,15 +57,13 @@ void initTextures();
  @return: NONE.
 **/
 void initialise();
-=======
 /** @brief: Gets the image for texturing and returns the useable data.
- 
+
  @param: name (char*) - Name of texture file.
  @param: tmpTex (GLuint) - The data for the texure being gathered.
- 
+
  @return: tmpTex.
-//
+**/
 GLuint GetTexImage(char* name);
->>>>>>> origin/master
 
 #endif /* Texturing_h */
