@@ -1,4 +1,4 @@
-
+/*
 #include "Texturing.h"
 #include "CustomDataTypes.h"
 #include <stdio.h>
@@ -11,92 +11,63 @@
 #include <GL/glut.h>
 #endif
 
-int width, height; // of image
+#define MAXROW 200
+#define MAXCOL 320  // 320x200 pixel images
 
-pixel *image; // array of pixels
+typedef GLubyte pixelSingle;
+typedef char name[15];
 
-char *fileName = "FILE NAME HERE";
+name image_file_name;
 
-void readImage() // reads image as ppm file
+pixelSingle image[MAXROW][MAXCOL][3]; // image arrays
+pixelSingle p;
+
+name inf_name, outf_name; // strings to store file names
+FILE *inf_handle, *outf_handle; // file handles created at file open
+
+GLuint myTex[4]; // to hold he texture names returned by glGenTextures
+
+int charin;
+int r, c;
+
+void display()
 {
-    int w, h, max;
-    int i, j;
-    unsigned int r, g, b;
-    int k;
-    char ch;
-    FILE *fp;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    
+    glutSwapBuffers();
+}
 
-    fp = fopen(fileName, "r");
-
-    // read the header
-    fscanf(fp, "P%c\n", &ch);
-    if(ch != '3')
+GLuint GetTexImage(char* name)
+{
+    GLuint tmpTex;
+    
+    if((inf_handle = fopen(name, "rb")) == NULL) // open failed
     {
-        fprintf(stderr, "Only ascii mode 3 channel PPM files");
-        exit(-1);
+        puts("*** Can't open input file - please check file name typed!\n ");
+        fprintf(stderr,"filename %s not found\n",name);
+        charin = getchar();
+        exit(1); // terminate execution
     }
-
-    // read the width
-    fscanf(fp, "%d", &w);
-
-    // read the height
-    fscanf(fp, "%d", &h);
-
-    // max intensity
-    fscanf(fp, "%d", &max);
-
-    // no error checking yet
-    width = w;
-    height = h;
-
-    // printf("width = %d, height = %d\n", width, height);
-
-    image = (pixel *)malloc(width * height * sizeof(pixel));
-
-    for(i = 0; i < height; i++)
-    {
-        for(j = 0; j < width; j++)
-        {
-            fscanf(fp, "%d %d %d", &r, &g, &b);
-            k = i * width + j;
-            (*(image + k)) [0] = (GLubyte)r;
-            (*(image + k)) [1] = (GLubyte)g;
-            (*(image + k)) [2] = (GLubyte)b;
+    
+    for ( r = 0;  r < MAXROW; r++ )
+        for ( c = 0;  c < MAXCOL; c++)  {
+            if((charin=fgetc(inf_handle))==EOF)   // read failed
+            {
+                printf("***File reading failed! \n");
+                charin = getchar();
+                exit(1);    // terminate execution
+            }
+            image[r][c][0] = image[r][c][1] = image[r][c][2]= charin;
         }
-    }
-
-    fclose(fp);
-}
-
-void initTextures()
-{
-    GLint level = 0; // only 1 level
-    GLint components = 3; // r, g, b
-    GLint border = 0; // no border
-
-    readImage();
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // each pixelrow on a byte alighment boundary
-
-    glTexImage2D(GL_TEXTURE_2D, level, components, (GLsizei)width, (GLsizei)height, border, GL_RGB, GL_UNSIGNED_BYTE, image); // info about image
-
-    // chooses mapping type from texels to pixels
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // overwrite pixel with texture colour
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-
-    // enables texturing
-    glEnable(GL_TEXTURE_2D);
-}
-
-void initialise()
-{
-    glEnable(GL_DEPTH_TEST); // enables depth buffer
     
-    glClearDepth(1.0); // set the depth buffer for clearing
+    printf("\nImage input completed!\n");
+    fclose(inf_handle);    // close input file
     
-    initTextures(); // start texture mapping
+    glGenTextures(1, &tmpTex);    // generate one texture name and return in tmpTex
+    glBindTexture(GL_TEXTURE_2D, tmpTex); // bind tmpTex to 2D texture
+    gluBuild2DMipmaps(GL_TEXTURE_2D,3, MAXCOL,MAXROW, GL_RGB, GL_UNSIGNED_BYTE,image);
+    
+    return tmpTex;
 }
-
+*/
