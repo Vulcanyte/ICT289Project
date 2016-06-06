@@ -88,6 +88,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Room_and_Ball.h" />
+		<Unit filename="TexturedPlane.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="TexturedPlane.h" />
 		<Unit filename="Texturing.c">
 			<Option compilerVar="CC" />
 		</Unit>

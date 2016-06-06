@@ -4,6 +4,8 @@
 
 void GLWindowCreate(GL_Window* newWindow, char* name, int posX, int posY, int sizeX, int sizeY)
 {
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+
     // Set window creation to size (sizeX, sizeY).
     glutInitWindowSize(sizeX,sizeY);
     newWindow->dimensions[0] = sizeX;

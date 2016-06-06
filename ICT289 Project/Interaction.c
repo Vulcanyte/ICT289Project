@@ -43,11 +43,11 @@ short checkForPickUp(collider_Sphere* charCS, collider_Sphere* ballCS, interacti
     return 0;
 }
 
-void moveBallToPlayer(Camera cam)
+void moveBallToPlayer(Camera* cam)
 {
     collider_Sphere ball; // Creates ball
     GameObjectComponent ballComponent = {&ball, MODEL}; // Makes ball a model
     GameObject gameBall; // Makes a gameObject for ball
 
-    gameObjectSetPos(&gameBall, cam.position[0], cam.position[1], cam.position[2]); // Sets position of ball to in front of the camera.
+    gameObjectSetPos(&gameBall, cam->position[0], cam->position[1], cam->position[2]); // Sets position of ball to in front of the camera.
 }

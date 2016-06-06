@@ -108,13 +108,21 @@
     **/
     void cameraProject(Camera* cam);
 
-    /** @brief: Update the OpenGl lookAt using the parameters in a specified camera struct.
+    /** @brief: Update the OpenGl lookAt using the parameters in a specified camera struct, in First Person Perspective.
 
         @param: cam (Camera* ) - The camera that is being referenced.
 
         @return: NONE.
     **/
-    void cameraUpdate(Camera* cam);
+    void cameraUpdateFPS(Camera* cam);
+
+    /** @brief: Update the OpenGl lookAt using the parameters in a specified camera struct, in Third Person Perspective.
+
+        @param: cam (Camera* ) - The camera that is being referenced.
+
+        @return: NONE.
+    **/
+    void cameraUpdateTPS(Camera* cam);
 
     /** @brief: Update the Camera's zoom level. NOTE: This function automatically updates the OpenGl projection matrix.
 

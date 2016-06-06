@@ -20,6 +20,7 @@
     /// Specification for how the camera controls will affect the bound camera.
     typedef enum {FIRST_PERSON = 0, THIRD_PERSON = 1, TOP_DOWN = 2} ControlType;
 
+    /// Representation of a single keyboard key, as well as its down state.
     typedef struct
     {
         char key;       // A certain key.

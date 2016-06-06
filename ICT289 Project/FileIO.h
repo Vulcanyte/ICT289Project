@@ -8,6 +8,8 @@
     @Version: 1.0
 **/
 
+
+
 // This flag is used so that the compiler only accesses this header file once during compilation.
 // Excluding this guard will cause an error when multiple #includes for this header exist in a single program.
 #ifndef FLAG_JVIO
@@ -16,6 +18,7 @@
 
     #include <stdio.h>
     #include <unistd.h>
+    #include <GL/freeglut.h>
 
     /** @brief: Read in the data from an external .RAW formatted file.
 
@@ -26,9 +29,19 @@
 
         @return: NONE.
 
+        NOTE: The code for this function was taken from an example project:
+
+            'Rotating cube with texture mapping'
+            E. Angel, Interactive Computer Graphics
+            A Top-Down Approach with OpenGL, Third Edition
+            Addison-Wesley Longman, 2003
+
         @pre: The .RAW file MUST exist before this function is called, else this function will exit prematurely.
     **/
-    void fileReadRAW_G(const char* filePath, unsigned char data[], int width, int height);
+    GLuint fileGetTexImage(char* name);
+
+
+    unsigned int fileGenRawTexture(const char* filePath, int width, int height);
 
     /** @brief: Read in the data from an external .RAW formatted file and output it to a .TXT formatted file.
 

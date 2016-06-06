@@ -102,7 +102,7 @@ void cameraProject(Camera* cam)
     }
 }
 
-void cameraUpdate(Camera* cam)
+void cameraUpdateFPS(Camera* cam)
 {
     // Ensure that the OpenGl ModelView matrix is currently active.
     glMatrixMode(GL_MODELVIEW);
@@ -112,6 +112,20 @@ void cameraUpdate(Camera* cam)
     {
         point3 rot = {cam->lookAt[0] + cam->position[0], cam->lookAt[1] + cam->position[1], cam->lookAt[2] + cam->position[2]};
         gluLookAt(cam->position[0], cam->position[1], cam->position[2], rot[0], rot[1], rot[2], 0,1,0);
+        return;
+    }
+}
+
+void cameraUpdateTPS(Camera* cam)
+{
+    // Ensure that the OpenGl ModelView matrix is currently active.
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    if(cam->CamType == ORTHOGONAL || cam->CamType == PERSPECTIVE)
+    {
+        point3 rot = {cam->position[0] - cam->lookAt[0] * 100, cam->position[1] - cam->lookAt[1] * 100, cam->position[2] - cam->lookAt[2] * 100};
+        gluLookAt(rot[0], rot[1], rot[2], cam->position[0], cam->position[1], cam->position[2], 0,1,0);
         return;
     }
 }

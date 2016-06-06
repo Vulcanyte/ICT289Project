@@ -20,11 +20,20 @@
 #include "Texturing.h"
 #include "Interaction.h"
 
+#include "TexturedPlane.h"
+
 // Core Program Parameters.
 GL_Window programWindow;
 const float FRAMERATE = 1/60.0f;                     // ~60 FPS.
 const float FRAMERATE_MILLIS = 1/60.0f * 1000;       // Millisecond version of framerate.
 const float PHYSICS_MILLIS = 200;                 // Millisecond version of physics update rate.
+
+ControlKey physicsControl_AirDecel;
+float phys_AirDecel = 0.0f;
+ControlKey physicsControl_Gravity;
+float phys_Grav = 0.0f;
+ControlKey physicsControl_SimSpeed;
+float phys_Spd = 0.0f;
 
 // Camera-related Parameters.
 Camera cam;
@@ -32,18 +41,19 @@ CameraControlKeys controlKeys;
 CameraController controller;
 
 // Pop-up Menu-related Parameters.
-GL_PopupMenu mainMenu;
-GL_PopupMenu subMenuTest;
-GL_PopupMenuEntry testOptions[] = {{"Red", 1}, {"Blue", 2}, {"GREEN", 3}, {"ORANGE", 4}};
-GL_PopupMenuEntry subTestOptions[] = {{"SUB Red", 1}, {"SUB Blue", 2}, {"SUB Green", 3}, {"SUB Orange", 4}};
+GL_PopupMenu cameraMenu;
+GL_PopupMenuEntry camOptions[] = {{"First-Person Camera", 1}, {"Third-Person Camera", 2}};
 
 // GUI-related Parameters.
-
 GUItext mouseLockText;
 GUItext posText;
 GUItext ballText;
 GUItext ballText2;
 GUItext debugTxt;
+
+GUItext simParam1;
+GUItext simParam2;
+GUItext simParam3;
 
 GUIline HUDtop;
 GUIline HUDside;
@@ -60,6 +70,9 @@ GUItext controlDisplay_mouseLock;
 
 GUIframe dataFrame;
 GUIframeEntry dataFrameOptions[] = {{&mouseLockText, GUI_TEXT}, {&posText, GUI_TEXT}, {&ballText, GUI_TEXT}, {&ballText2, GUI_TEXT}, {&controlDisplayPrompt, GUI_TEXT}};
+
+GUIframe simulationFrame;
+GUIframeEntry simFrameOptions[] = {{&simParam1, GUI_TEXT}, {&simParam2, GUI_TEXT}, {&simParam3, GUI_TEXT}};
 
 GUIframe debugFrame;
 GUIframeEntry debugFrameOptions[] = {{&debugTxt, GUI_TEXT}};
@@ -101,12 +114,41 @@ collider_AABB playerBody;
 GameObject player;
 GameObjectComponent playerComponents[] = {{&playerRange, COLL_SPHERE}, {&playerBody, COLL_BOX}};
 
-float penetration = 0;
+// Set up interaction control structs.
+interactionController interController;
+interactionControlKeys interControls;
+
+// 2D Texture planes.
+TexturedPlane testPlane;
+TexturedPlane testPlane2;
+TexturedPlane testPlane3;
+TexturedPlane testPlane4;
+TexturedPlane testPlane5;
 
 void printPoint(point3 p)
 {
     printf("X: %1.3f, Y: %1.3f, Z: %1.3f\n", p[0], p[1], p[2]);
     return;
+}
+
+void camMenuFunc(int option)
+{
+    switch(option)
+    {
+        case 1:
+            controller.typeOfController = FIRST_PERSON;
+            cameraUpdateFPS(&cam);
+            break;
+
+        case 2:
+            controller.typeOfController = THIRD_PERSON;
+            cameraUpdateTPS(&cam);
+            break;
+
+        default:
+            // Do nothing...
+            break;
+    }
 }
 
 void myinit( void )
@@ -115,38 +157,35 @@ void myinit( void )
     glLineWidth(5.0);
 
     // --------------------   Set up the camera.   --------------------
-    
+
             cameraInit(&cam, -500, 500, -500, 500, 0.01f, 10000.0f, 45, 1, PERSPECTIVE);
             cameraOrientate_f(&cam, -100, 180, 200, 150, 100, 0);
-
-            // Activate the camera.
-            cameraProject(&cam);
-            cameraUpdate(&cam);
 
             // Bind the camera to some controls.
             controllerBindCameraToKeys(&controller, &cam, &controlKeys, FIRST_PERSON);
             controllerEditBasicKeyControls(&controller, 'w', 's', 'q', 'e', 'a', 'd', 'c', 400.0f);
             controllerEditMouseControls(&controller, 0.005f, 0.005f);
 
+            // Activate the camera.
+            cameraProject(&cam);
+
+            if(controller.typeOfController == FIRST_PERSON)
+                cameraUpdateFPS(&cam);
+            else
+                cameraUpdateTPS(&cam);
+
             // Enable depth testing.
             glEnable(GL_DEPTH_TEST);
-    
+
     // --------------------   Set up the interaction.   --------------------
-    
-            // Set up interaction control structs.
-            interactionController* interController;
-            interactionControlKeys* interControls;
-    
+
             // Bind control keys.
-            bindKeysToControls(interController, &playerBody, interControls);
-            changingInteractionKeyControls(interController, 'f', 't', 'm');
+            bindKeysToControls(&interController, &playerRange, &interControls);
+            changingInteractionKeyControls(&interController, 'f', 't', 'm');
 
     // --------------------   Set up the popup menus.   --------------------
-    
-            GLPopupMenuCreate(&mainMenu, "Main Menu", testMenuFunct, GLUT_MIDDLE_BUTTON, testOptions, 4);
-            GLPopupMenuCreate(&subMenuTest, "SubMenu", testSubMenuFunc, -1, subTestOptions, 4);
 
-            GLPopupMenuCreateSub(&mainMenu, &subMenuTest);
+            GLPopupMenuCreate(&cameraMenu, "Main Menu", camMenuFunc, GLUT_MIDDLE_BUTTON, camOptions, 2);
 
     // --------------------   Set up the GameObjects.   --------------------
 
@@ -175,14 +214,21 @@ void myinit( void )
 
             collisionDebug_Toggle(1);
 
-    // --------------------   Set up the RigidBodies.   --------------------
+    // --------------------   Set up the Physics.   --------------------
 
-            physicsSetSimulationSpeed(10.0f);
+            physicsSetSimulationSpeed(0.1f);
 
             physicsInit(&ballPhysics, 1, 0.8f, 1, 1, 0);
             physicsSetPosition(&ballPhysics, ball.position[0], ball.position[1], ball.position[2]);
             physicsAddVelocity(&ballPhysics, -100, 0, 20);
             physicsSetAirDeceleration(2.0f);
+
+            physicsControl_AirDecel.key = '1';
+            phys_AirDecel = physicsGetParam(PHYS_AIRDECEL);
+            physicsControl_Gravity.key = '2';
+            phys_Grav = physicsGetParam(PHYS_GRAVITY);
+            physicsControl_SimSpeed.key = '3';
+            phys_Spd = physicsGetParam(PHYS_SPEED);
 
     // --------------------   Set up the GUI.   --------------------
 
@@ -201,6 +247,17 @@ void myinit( void )
             GUIlinkTextToParam(&controlDisplayPrompt, "X", CHAR_param);
 
             GUInewFrame(&dataFrame, 1, dataFrameOptions, 5);
+
+            GUInewText(&simParam1, "Air Decel. (m/s) : ", 0, 30, (void*)GLUT_BITMAP_HELVETICA_18);
+            GUInewText(&simParam2, "Gravity (m/s) : ", 0, 60, (void*)GLUT_BITMAP_HELVETICA_18);
+            GUInewText(&simParam3, "Simulation Speed : ", 0, 90, (void*)GLUT_BITMAP_HELVETICA_18);
+
+            GUIlinkTextToParam(&simParam1, &phys_AirDecel, FLOAT_param);
+            GUIlinkTextToParam(&simParam2, &phys_Grav, FLOAT_param);
+            GUIlinkTextToParam(&simParam3, &phys_Spd, FLOAT_param);
+
+            GUInewFrame(&simulationFrame, 2, simFrameOptions, 3);
+            GUIpositionFrame(&simulationFrame, 0, 200);
 
             // Initialise Control frame elements.
             GUInewText(&controlDisplayPrompt, "Show/Hide controls: ", 0, programWindow.dimensions[1], (void*)GLUT_BITMAP_HELVETICA_18);
@@ -228,7 +285,30 @@ void myinit( void )
             GUInewLine(&HUDside, 300, 15, 300, 203, 5.0f, 1.0, 0.5, 0.0);
             GUInewLine(&HUDbottom, 0, 200, 300, 200, 5.0f, 1.0, 0.5, 0.0);
 
-            GUInewFrame(&borderFrame, 2, borderFrameOptions, 3);
+            GUInewFrame(&borderFrame, 4, borderFrameOptions, 3);
+
+            texPlaneInit(&testPlane, 0, 250, 451, 1000, 500, "\\IMG\\bush1.raw");
+            texPlaneSetRotation(&testPlane, 0, 180, 0);
+
+            texPlaneInit(&testPlane2, 0, 250, -451, 1000, 500, "\\IMG\\bush1.raw");
+            texPlaneSetRotation(&testPlane2, 0, 0, 0);
+
+            texPlaneInit(&testPlane3, -451, 250, 0, 1000, 500, "\\IMG\\link.raw");
+            texPlaneSetRotation(&testPlane3, 0, 90, 0);
+
+            texPlaneInit(&testPlane4, 451, 250, 0, 1000, 500, "\\IMG\\link.raw");
+            texPlaneSetRotation(&testPlane4, 0, -90, 0);
+
+            texPlaneInit(&testPlane5, 0, 0, 0, 1000, 1000, "\\IMG\\link.raw");
+            texPlaneSetRotation(&testPlane5, -90, 0, 0);
+
+            glEnable(GL_TEXTURE_2D);
+
+            glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);         // if different change for each tex
+            glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+            glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+            glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);         // MODULATE IS DEFAULT
 
             gameObjectUpdate(&player);
             gameObjectUpdate(&ball);
@@ -245,12 +325,37 @@ void keyboard( unsigned char ch, int num1, int num2 )
         else
             GUIenableFrame(&controlDisplayFrame);
     }
+
+    if(ch == physicsControl_AirDecel.key)
+        physicsControl_AirDecel.down = 1;
+
+    if(ch == physicsControl_Gravity.key)
+        physicsControl_Gravity.down = 1;
+
+    if(ch == physicsControl_SimSpeed.key)
+        physicsControl_SimSpeed.down = 1;
 }
 
 void keyboardUp( unsigned char ch, int num1, int num2 )
 {
     if(ch != controlKeys.mouseLock.key)
         controllerCheckKeys(&controller, ch);
+
+    if(ch == physicsControl_AirDecel.key)
+    {
+        physicsControl_AirDecel.down = 0;
+        printf("AirDecel UP\n");
+    }
+
+    if(ch == physicsControl_Gravity.key)
+    {
+        physicsControl_Gravity.down = 0;
+    }
+
+    if(ch == physicsControl_SimSpeed.key)
+    {
+        physicsControl_SimSpeed.down = 0;
+    }
 }
 
 void mouseMove( int x, int y )
@@ -261,6 +366,55 @@ void mouseMove( int x, int y )
 void mouseButton( int button, int state, int x, int y )
 {
     controllerCheckButtons(&controller, button, state, x, y);
+}
+
+void MouseWheel( int button, int dir, int x, int y)
+{
+    // Ignore one half of the incoming key presses, so functionlaity is only called ONCE.
+    if(dir == GLUT_UP)
+        return;
+
+    if(button == 3)
+    {
+        if(physicsControl_AirDecel.down && phys_AirDecel >= 0)
+        {
+            phys_AirDecel += 0.1f;
+            physicsSetAirDeceleration(phys_AirDecel);
+        }
+
+        if(physicsControl_Gravity.down && phys_Grav >= 0)
+        {
+            phys_Grav += 0.1f;
+            physicsSetGravity(phys_Grav);
+        }
+
+        if(physicsControl_SimSpeed.down && phys_Spd >= 0.1f)
+        {
+            phys_Spd += 0.1f;
+            physicsSetSimulationSpeed(phys_Spd);
+        }
+    }
+    else
+    if(button == 4)
+    {
+        if(physicsControl_AirDecel.down && phys_AirDecel >= 0.1f)
+        {
+            phys_AirDecel -= 0.1f;
+            physicsSetAirDeceleration(phys_AirDecel);
+        }
+
+        if(physicsControl_Gravity.down && phys_Grav >= 0.1f)
+        {
+            phys_Grav -= 0.1f;
+            physicsSetGravity(phys_Grav);
+        }
+
+        if(physicsControl_SimSpeed.down && phys_Spd >= 0.2f)
+        {
+            phys_Spd -= 0.1f;
+            physicsSetSimulationSpeed(phys_Spd);
+        }
+    }
 }
 
 void FrameUpdate(int value)
@@ -278,7 +432,6 @@ void FrameUpdate(int value)
     for(i = 0; i < 6; i++)
         if(collisionCollideBB(&playerBody, roomSurfaces[i]))
         {
-
             point3 normal1 = {0,0,0};
             point3 normal2 = {0,0,0};
 
@@ -295,7 +448,10 @@ void FrameUpdate(int value)
     cam.position[2] = playerBody.position[2];
 
     // Update the camera.
-    cameraUpdate(&cam);
+    if(controller.typeOfController == FIRST_PERSON)
+        cameraUpdateFPS(&cam);
+    else
+        cameraUpdateTPS(&cam);
 
     for (i = 0; i < 6; i++)
         if(collisionCollideSB(&ballBounds, roomSurfaces[i]))
@@ -303,8 +459,7 @@ void FrameUpdate(int value)
             point3 normal1 = {0,0,0};
             point3 normal2 = {0,0,0};
 
-
-            penetration = collisionFindNormalSB(&ballBounds, roomSurfaces[i], &normal1[0], &normal1[1], &normal1[2], &normal2[0], &normal2[1], &normal2[2]);
+            float penetration = collisionFindNormalSB(&ballBounds, roomSurfaces[i], &normal1[0], &normal1[1], &normal1[2], &normal2[0], &normal2[1], &normal2[2]);
 
             if(normal1[0] != 0)
                 ballPhysics.velocity[0] *= -1 * ballPhysics.bounceDecay;
@@ -324,18 +479,6 @@ void FrameUpdate(int value)
                 ballPhysics.velocity[2] *= -1 * ballPhysics.bounceDecay;
 
             physicsUpdate(&ballPhysics, FRAMERATE);
-
-            /*ballPhysics.position[0] -= -(normal1[0] * penetration + normal1[0]);
-            ballPhysics.position[1] -= -(normal1[1] * penetration) + normal1[1];
-            ballPhysics.position[2] -= -(normal1[2] * penetration + normal1[2]);*/
-
-            printf("ball velocity");
-            printPoint(ballPhysics.velocity);
-
-            printf("ball Normal: ");
-            printPoint(normal1);
-            printf("floor Normal: ");
-            printPoint(normal2);
         }
 
     gameObjectUpdate(&ball);
@@ -355,6 +498,7 @@ void display( void )
     GUIrenderFrame(&borderFrame);           // Render borders.
     GUIrenderFrame(&controlDisplayFrame);   // Render controls.
     GUIrenderFrame(&debugFrame);            // Render any debug stuff.
+    GUIrenderFrame(&simulationFrame);       // Render the simulation parameters.
 
     GUIdisable2DRendering(&programWindow);
     // --------------------   STOP Drawing the GUI.   --------------------
@@ -370,21 +514,20 @@ void display( void )
 
     collisionDebug_DrawS(&ballBounds);
 
-    //drawRoom(100.0f);
+    if(controller.typeOfController != FIRST_PERSON)
+        collisionDebug_DrawB(&playerBody);
 
-    //gameObjectRender(&player);
+    glEnable(GL_TEXTURE_2D);
+
+    texPlaneDraw(&testPlane);
+    texPlaneDraw(&testPlane2);
+    texPlaneDraw(&testPlane3);
+    texPlaneDraw(&testPlane4);
+    texPlaneDraw(&testPlane5);
+
+    glDisable(GL_TEXTURE_2D);
 
     // --------------------   STOP drawing the environment.   --------------------
-
-    //DrawHouse(GL_LINE_LOOP);
-
-    /*glPushMatrix();
-    glLoadIdentity();
-        glTranslatef(350, 0, 50);
-        glRotatef(-90, 0, 1, 0);
-        DrawHouse(GL_POLYGON);
-
-    glPopMatrix();*/
 
     glutSwapBuffers();
     glFlush();
@@ -402,9 +545,9 @@ int main( int argc, char** argv )
     glutDisplayFunc(display);
     glutIgnoreKeyRepeat(1);
     glutKeyboardFunc(keyboard);
-
     glutKeyboardUpFunc(keyboardUp);
     glutPassiveMotionFunc(mouseMove);
+    glutMouseFunc(MouseWheel);
 
     // Timer functions.
     glutTimerFunc(FRAMERATE_MILLIS, FrameUpdate, 0);

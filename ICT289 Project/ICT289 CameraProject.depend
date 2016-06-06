@@ -150,15 +150,15 @@
 	"CustomGUI.h"
 	"GLWindow.h"
 
-1464701562 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\camera.c
+1465127748 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\camera.c
 	<gl/freeglut.h>
 	<stdio.h>
 	"Camera.h"
 
-1464701562 u:\users\joshua voysey\documents\github\ict289project\ict289 project\camera.h
+1465126788 u:\users\joshua voysey\documents\github\ict289project\ict289 project\camera.h
 	"CustomDataTypes.h"
 
-1464701562 u:\users\joshua voysey\documents\github\ict289project\ict289 project\customdatatypes.h
+1465107510 u:\users\joshua voysey\documents\github\ict289project\ict289 project\customdatatypes.h
 	<GLUT/glut.h>
 	<GL/glut.h>
 
@@ -170,7 +170,7 @@
 	<GL/freeglut.h>
 	"CameraController.h"
 
-1464701562 u:\users\joshua voysey\documents\github\ict289project\ict289 project\cameracontroller.h
+1465107539 u:\users\joshua voysey\documents\github\ict289project\ict289 project\cameracontroller.h
 	"Camera.h"
 
 1464701562 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\customgui.c
@@ -193,7 +193,7 @@
 
 1464701562 u:\users\joshua voysey\documents\github\ict289project\ict289 project\drawableprimitives.h
 
-1464701562 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\glwindow.c
+1465189855 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\glwindow.c
 	"GLWindow.h"
 	<GL/freeglut.h>
 
@@ -208,8 +208,9 @@
 
 1464701562 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\popupmenufunctions.c
 
-1464782963 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\main.c
-	<gl/freeglut.h>
+1465196601 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\main.c
+	<GLUT/glut.h>
+	<GL/glut.h>
 	"DrawablePrimitives.h"
 	"Camera.h"
 	"CameraController.h"
@@ -219,23 +220,27 @@
 	"CollisionDetection.h"
 	"FileIO.h"
 	"GameObject.h"
-	"Room_and_Ball.h"
 	"RigidBody.h"
+	"Texturing.h"
+	"Interaction.h"
+	"TexturedPlane.h"
 
 1464701562 u:\users\joshua voysey\documents\github\ict289project\ict289 project\collisiondetection.h
 	"CustomDataTypes.h"
 	<GL/freeglut.h>
 
-1464782060 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\collisiondetection.c
+1464867349 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\collisiondetection.c
 	"CollisionDetection.h"
 	<math.h>
 
-1464701562 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\fileio.c
+1465193670 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\fileio.c
 	"FileIO.h"
+	<GL/freeglut.h>
 
-1464701562 u:\users\joshua voysey\documents\github\ict289project\ict289 project\fileio.h
+1465193274 u:\users\joshua voysey\documents\github\ict289project\ict289 project\fileio.h
 	<stdio.h>
 	<unistd.h>
+	<GL/freeglut.h>
 
 1464701562 source:c:\users\32210066\desktop\ict289project-master\ict289project-master\ict289 project\camera.c
 	<gl/freeglut.h>
@@ -549,29 +554,29 @@
 	<GLUT/glut.h>
 	<GL/glut.h>
 
-1464775666 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\gameobject.c
+1464868644 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\gameobject.c
 	"GameObject.h"
 
-1464701562 u:\users\joshua voysey\documents\github\ict289project\ict289 project\gameobject.h
+1464868242 u:\users\joshua voysey\documents\github\ict289project\ict289 project\gameobject.h
 	"CollisionDetection.h"
 	"RigidBody.h"
 
-1464782439 u:\users\joshua voysey\documents\github\ict289project\ict289 project\rigidbody.h
+1465108195 u:\users\joshua voysey\documents\github\ict289project\ict289 project\rigidbody.h
 	"CustomDataTypes.h"
 
-1464756752 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\interaction.c
+1465107452 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\interaction.c
 	"Interaction.h"
 	"GameObject.h"
 	"Camera.h"
 	<GLUT/glut.h>
 	<GL/glut.h>
 
-1464701562 u:\users\joshua voysey\documents\github\ict289project\ict289 project\interaction.h
-	"CollisionDetection.h"
-	"GameObject.h"
-	"Camera.h"
+1465107440 u:\users\joshua voysey\documents\github\ict289project\ict289 project\interaction.h
 	<GLUT/glut.h>
 	<GL/glut.h>
+	"CustomDataTypes.h"
+	"CollisionDetection.h"
+	"Camera.h"
 
 1464701562 u:\users\joshua voysey\documents\github\ict289project\ict289 project\room_and_ball.h
 	<stdio.h>
@@ -592,7 +597,7 @@
 	<GLUT/glut.h>
 	<GL/glut.h>
 
-1464783025 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\rigidbody.c
+1465124948 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\rigidbody.c
 	"RigidBody.h"
 
 1464701562 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\room_and_ball.c
@@ -602,7 +607,7 @@
 	<GL/glut.h>
 	"Room_and_Ball.h"
 
-1464755754 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\texturing.c
+1465002458 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\texturing.c
 	"Texturing.h"
 	"CustomDataTypes.h"
 	<stdio.h>
@@ -611,10 +616,18 @@
 	<GLUT/glut.h>
 	<GL/glut.h>
 
-1464701562 u:\users\joshua voysey\documents\github\ict289project\ict289 project\texturing.h
+1465107358 u:\users\joshua voysey\documents\github\ict289project\ict289 project\texturing.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<GLUT/glut.h>
 	<GL/glut.h>
+
+1465197188 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\texturedplane.c
+	<GL/freeglut.h>
+	"TexturedPlane.h"
+	"FileIO.h"
+
+1465190446 u:\users\joshua voysey\documents\github\ict289project\ict289 project\texturedplane.h
+	"CustomDataTypes.h"
 
