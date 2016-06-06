@@ -17,7 +17,6 @@
 #include "FileIO.h"
 #include "GameObject.h"
 #include "RigidBody.h"
-#include "Texturing.h"
 #include "Interaction.h"
 
 #include "TexturedPlane.h"
