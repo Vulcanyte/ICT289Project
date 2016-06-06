@@ -150,19 +150,19 @@
 	"CustomGUI.h"
 	"GLWindow.h"
 
-1465223129 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\camera.c
+1465227397 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\camera.c
 	<gl/freeglut.h>
 	<stdio.h>
 	"Camera.h"
 
-1465222851 u:\users\joshua voysey\documents\github\ict289project\ict289 project\camera.h
+1465227397 u:\users\joshua voysey\documents\github\ict289project\ict289 project\camera.h
 	"CustomDataTypes.h"
 
-1465214890 u:\users\joshua voysey\documents\github\ict289project\ict289 project\customdatatypes.h
+1465227397 u:\users\joshua voysey\documents\github\ict289project\ict289 project\customdatatypes.h
 	<GLUT/glut.h>
 	<GL/glut.h>
 
-1465223098 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\cameracontroller.c
+1465227397 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\cameracontroller.c
 	<stdio.h>
 	<math.h>
 	<conio.h>
@@ -170,7 +170,7 @@
 	<GL/freeglut.h>
 	"CameraController.h"
 
-1465214884 u:\users\joshua voysey\documents\github\ict289project\ict289 project\cameracontroller.h
+1465227397 u:\users\joshua voysey\documents\github\ict289project\ict289 project\cameracontroller.h
 	"Camera.h"
 	"CustomDataTypes.h"
 
@@ -209,7 +209,7 @@
 
 1464701562 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\popupmenufunctions.c
 
-1465225307 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\main.c
+1465228439 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\main.c
 	<GLUT/glut.h>
 	<GL/glut.h>
 	"DrawablePrimitives.h"
@@ -222,7 +222,6 @@
 	"FileIO.h"
 	"GameObject.h"
 	"RigidBody.h"
-	"Texturing.h"
 	"Interaction.h"
 	"TexturedPlane.h"
 
@@ -234,7 +233,7 @@
 	"CollisionDetection.h"
 	<math.h>
 
-1465213028 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\fileio.c
+1465227397 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\fileio.c
 	"FileIO.h"
 	<GL/freeglut.h>
 
@@ -555,10 +554,10 @@
 	<GLUT/glut.h>
 	<GL/glut.h>
 
-1465211395 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\gameobject.c
+1465227397 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\gameobject.c
 	"GameObject.h"
 
-1465209225 u:\users\joshua voysey\documents\github\ict289project\ict289 project\gameobject.h
+1465227397 u:\users\joshua voysey\documents\github\ict289project\ict289 project\gameobject.h
 	"CollisionDetection.h"
 	"RigidBody.h"
 	"TexturedPlane.h"
@@ -566,12 +565,12 @@
 1465108195 u:\users\joshua voysey\documents\github\ict289project\ict289 project\rigidbody.h
 	"CustomDataTypes.h"
 
-1465216839 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\interaction.c
+1465227397 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\interaction.c
 	"Interaction.h"
 	<GLUT/glut.h>
 	<GL/glut.h>
 
-1465215512 u:\users\joshua voysey\documents\github\ict289project\ict289 project\interaction.h
+1465227397 u:\users\joshua voysey\documents\github\ict289project\ict289 project\interaction.h
 	<GLUT/glut.h>
 	<GL/glut.h>
 	"CustomDataTypes.h"
@@ -599,7 +598,7 @@
 	<GLUT/glut.h>
 	<GL/glut.h>
 
-1465219204 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\rigidbody.c
+1465227397 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\rigidbody.c
 	"RigidBody.h"
 
 1464701562 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\room_and_ball.c
@@ -625,11 +624,11 @@
 	<GLUT/glut.h>
 	<GL/glut.h>
 
-1465213318 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\texturedplane.c
+1465227397 source:u:\users\joshua voysey\documents\github\ict289project\ict289 project\texturedplane.c
 	<GL/freeglut.h>
 	"TexturedPlane.h"
 	"FileIO.h"
 
-1465210060 u:\users\joshua voysey\documents\github\ict289project\ict289 project\texturedplane.h
+1465227397 u:\users\joshua voysey\documents\github\ict289project\ict289 project\texturedplane.h
 	"CustomDataTypes.h"
 

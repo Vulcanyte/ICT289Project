@@ -18,7 +18,6 @@
 #include "GameObject.h"
 #include "RigidBody.h"
 #include "Interaction.h"
-
 #include "TexturedPlane.h"
 
 // Core Program Parameters.
